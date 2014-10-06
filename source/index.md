@@ -3,12 +3,6 @@ title: API Reference
 
 language_tabs:
   - shell
-  - ruby
-  - python
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -18,39 +12,173 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Instagift API. This API exposes some select endpoints for interacting
+with Instagift's data. The format of the API closely follows
+<a href="http://jsonapi.org/" target="_blank">JSON API</a>.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Consumer Access
 
-This example API documentation page was created with [Slate](http://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Both users and merchants can authenticate using request headers.
+Each endpoint that requires authentication requires the proper authentication headers be included.
 
-# Authentication
+## User Authentication
 
-> To authorize, use this code:
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import 'kittn'
-
-api = Kittn.authorize('meowmeowmeow')
-```
+> Sample request including user authentication headers
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl -X GET -H "Content-Type: application/json" \
+  -H "X-User-Email: person@example.com" \
+  -H "X-User-Token: quhZKsGMSJc5eUAYm-FA" \
+  https://api.instagift.com/v2/sample/endpoint
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+Parameter | Required | Description
+--------- | --------- | -----------
+X-User-Email | true | A valid email for an Instagift user account
+X-User-Token | true | See [Request User Token](#request-user-token)
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+### Authenticated User Endpoints
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Endpoint | Description
+--------- | -----------
+DELETE /v2/tokens | [Reset Token](#reset-user-token)
+GET /v2/users/{users.id} | [Get User Details](#)
+GET /v2/users/{users.id}/certificates | [Get Certificates Collection](#)
+GET /v2/certificates/{certificates.id} | [Get Certificate Details](#)
+POST /v2/certificates/{certificates.id}/certificates | [Split Certificate Value](#)
+POST /v2/certficates/{certificates.id}/redemptions | [Redeem Certificate](#)
+GET /v2/users/{users.id}/redemptions | [Get Redemptions Collection](#)
+GET /v2/redemptions/{redemptions.id} | [Get Redemption Details](#)
+POST /v2/certificates/{certificates.id}/gifts | [Send Gift](#)
+GET /v2/users/{users.id}/gifts | [Get Gift Collection](#)
+GET /v2/gifts/{gifts.id} | [Get Gift Details](#)
+
+## Request User Token
+
+> Sample request
+
+```shell
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"user":{"email":"person@example.com","password":"testing1234"}}' \
+  http://api.instagift.com/v2/tokens
+```
+> Sample response
+
+```json
+{
+  "links": {
+    "user.certificates": "/v2/user/{users.id}/certificates",
+    "user.redemptions": "/v2/user/{users.id}/redemptions",
+    "user.gifts": "/v2/user/{users.id}/gifts"
+  },
+  "users": [
+    {
+      "id": "GddXpGdvs3V89PkUwCSoIg",
+      "href": "/v2/users/GddXpGdvs3V89PkUwCSoIg",
+      "email": "person@example.com",
+      "name": "Mike Schmidt",
+      "authentication_token": "quhZKsGMSJc5eUAYm-FA",
+      "last_login_at": "2014-07-09T01:41:41Z"
+    }
+  ]
+}
+```
+
+### HTTP Request
+
+`POST https://api.instagift.com/v2/tokens`
+
+### HTTP Parameters
+
+Parameter | Required | Description
+--------- | --------- | -----------
+user | true | A JSON object of a user’s credentials. { user: { email: "person@example.com", password: "testing1234" } }
+
+### Response
+
+Parameter | Description
+--------- | -----------
+id | Unique identifier for this user
+href | Resource URL for this user, will respond to GET requests
+email | User's email address, used for API authentication
+authentication_token | Token used for API authentication
+last_login_at | Datetime of last login
+
+### Relationships
+
+Name | Description
+--------- | --------- | -----------
+certificates | A collection of certificates for this user
+redemptions | A collection of redemption for this user
+gifts | A collection of gifts for this user
+
+## Reset User Token
+
+## Reset Password
+
+## List all Certificates
+## Fetch a Certificate
+## Redeem a Certificate
+## Split a Certificate
+## Gift a Certificate
+## Claim a Certificate
+## List all Redemptions
+## Fetch a Redemption
+## List all Gifts for a User
+
+# Merchant Access
+
+## API Keys
+
+Merchant's can generate API keys in their Instagift Merchant Dashboard.
+
+> Sample request including merchant authentication headers
+
+```shell
+curl -X GET -H "Content-Type: application/json" \
+  -H "X-Merchant-Key: OWqqv2rwnWucQC22CVwvMg" \
+  -H "X-Merhcant-Secret: 1WngOCryMpl1l7fXH7DIYA" \
+  https://api.instagift.com/v2/sample/endpoint
+```
+
+### HTTP Headers
+
+Include these HTTP headers in each API request for authentication.
+
+Parameter | Required | Description
+--------- | --------- | -----------
+X-Merchant-Key | true | Generated from the Merchant Dashboard
+X-Merchant-Secret | true | Generated from the Merchant Dashboard
+
+### Merchant Endpoints
+
+Merchants have access to the following API endpoints. Authentication required.
+
+Endpoint | Description
+--------- | -----------
+GET /v2/merchants/{merchants.id}/certificates | [List all Certificates](#)
+GET /v2/certificates/{certificates.id} | [Fetch a Certificate by ID](#)
+POST /v2/certificates/{certificates.id}/redemptions | [Redeem a Certificate by ID](#)
+GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Code](#)
+POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem Certificate by Claim Code](#)
+GET /v2/merchants/{merchants.id}/redemptions | [List all Redemptions](#)
+GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption by ID](#)
+
+## List all Certificates
+## Fetch a Certificate by ID
+## Redeem a Certificate by ID
+## Fetch a Certificate by Claim Code
+## Redeem a Certificate by Claim Code
+## List all Redemptions
+## Fetch a Redemption
+
+# Support Tickets
+
+## Create a Support Ticket
+
+
+# Markdown Examples
 
 `Authorization: meowmeowmeow`
 
@@ -58,111 +186,9 @@ Kittn expects for the API key to be included in all API requests to the server i
 You must replace `meowmeowmeow` with your personal API key.
 </aside>
 
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import 'kittn'
-
-api = Kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
 </aside>
 
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import 'kittn'
-
-api = Kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
 <aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the cat to retrieve
 
