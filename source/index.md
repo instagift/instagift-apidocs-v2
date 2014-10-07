@@ -1,8 +1,8 @@
 ---
-title: API Reference
+title: Instagift API Reference
 
 language_tabs:
-  - shell
+  - cURL
 
 includes:
   - errors
@@ -12,38 +12,51 @@ search: true
 
 # API Overview
 
-Welcome to the Instagift API. This API exposes some select endpoints for interacting
-with Instagift data. The API is JSON only, and closely follows to format of
+This API provides Instagift merchants and users the ability to read and interact
+with select Instagift data. The API is JSON only, and closely follows to format of
 <a href="http://jsonapi.org/" target="_blank">JSON API</a>.
 
-### Authentication
+### Support
+
+Please email [support@instagift.com](mailto:support@instagift.com) with all questions and issues.
+
+### Typos & Problems
+
+The source for this guide is publicy available on GitHub. Feel free to
+make pull requests if you find any typos or problems, we'll do our best to keep
+it updated.
+
+* [https://github.com/mikesch/instagift-apidocs-v2](https://github.com/mikesch/instagift-apidocs-v2)
 
 ### Rate Limiting
 
-### Support
+Coming soon
+
 
 # Authentication
 
 Both users and merchants can authenticate by setting a combination of two HTTP request headers
 ('X-User-Email' and 'X-User-Token' for users and 'X-Merchant-Key' and 'X-Merchant-Secret' for merchants).
 Throughout this doc,
-endpoints that require user and/or merchant authentication will be marked like this:
+endpoints will be marked as
+<code class="prettyprint user">USER</code>,
+<code class="prettyprint merchant">MERCHANT</code>, or
+<code class="prettyprint public">PUBLIC</code>
+depending on the type of authorization required.
 
-* User
-* Merchant
-
-Shell examples will not include authentication headers.
+cURL examples will not include authentication headers.
 
 ## Authenticating a User
 
 > Sample request including user authentication headers
 
-```shell
-curl -X GET -H "Content-Type: application/json" \
+```cURL
+curl https://api.instagift.com/v2/sample/endpoint \
   -H "X-User-Email: person@example.com" \
   -H "X-User-Token: quhZKsGMSJc5eUAYm-FA" \
-  https://api.instagift.com/v2/sample/endpoint
 ```
+
+### HTTP Headers
 
 Parameter | Required | Description
 --------- | --------- | -----------
@@ -68,15 +81,15 @@ GET /v2/gifts/{gifts.id} | [Get Gift Details](#)
 
 ## Authenticating a Merchant
 
-Merchant's can generate API keys in their Instagift Merchant Dashboard.
+Merchant's can generate API keys from their Instagift Merchant Dashboard.
+<a href="https://instagift.com/#pricing" target="_blank">GROW plan required</a>
 
 > Sample request including merchant authentication headers
 
-```shell
-curl -X GET -H "Content-Type: application/json" \
+```cURL
+curl https://api.instagift.com/v2/sample/endpoint \
   -H "X-Merchant-Key: OWqqv2rwnWucQC22CVwvMg" \
-  -H "X-Merhcant-Secret: 1WngOCryMpl1l7fXH7DIYA" \
-  https://api.instagift.com/v2/sample/endpoint
+  -H "X-Merhcant-Secret: 1WngOCryMpl1l7fXH7DIYA"
 ```
 
 ### HTTP Headers
@@ -110,10 +123,10 @@ GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption by ID](#)
 
 > Sample request
 
-```shell
-curl -X POST -H "Content-Type: application/json" \
-  -d '{"user":{"email":"person@example.com","password":"testing1234"}}' \
-  http://api.instagift.com/v2/tokens
+```cURL
+curl -X POST http://api.instagift.com/v2/tokens \
+  -H "Content-Type: application/json" \
+  -d '{"user":{"email":"person@example.com","password":"testing1234"}}'
 ```
 > Sample response
 
@@ -129,7 +142,7 @@ curl -X POST -H "Content-Type: application/json" \
       "id": "GddXpGdvs3V89PkUwCSoIg",
       "href": "/v2/users/GddXpGdvs3V89PkUwCSoIg",
       "email": "person@example.com",
-      "name": "Mike Schmidt",
+      "name": "Tester Joe",
       "authentication_token": "quhZKsGMSJc5eUAYm-FA",
       "last_login_at": "2014-07-09T01:41:41Z"
     }
@@ -139,7 +152,7 @@ curl -X POST -H "Content-Type: application/json" \
 
 ### HTTP Request
 
-`POST https://api.instagift.com/v2/tokens`
+`POST https://api.instagift.com/v2/tokens` <code class="prettyprint public">PUBLIC</code>
 
 ### HTTP Parameters
 
@@ -161,15 +174,76 @@ last_login_at | Datetime of last login
 
 Name | Description
 --------- | --------- | -----------
-certificates | A collection of certificates for this user
-redemptions | A collection of redemption for this user
-gifts | A collection of gifts for this user
+[certificates](#certificates) | A collection of certificates for this user
+[redemptions](#redemptions) | A collection of redemption for this user
+[gifts](#gifts) | A collection of gifts for this user
+
 
 ## Reset User Token
 
+> Sample request
+
+```cURL
+curl -i -X DELETE http://api.instagift.com/v2/tokens \
+  -H "Content-Type: application/json" \
+  -H "X-User-Email: person@example.com" \
+  -H "X-User-Token: quhZKsGMSJc5eUAYm-FA" \
+```
+
+### HTTP Request
+
+`DELETE https://api.instagift.com/v2/tokens` <code class="prettyprint user">USER</code>
+
+### Response
+
+`204 No Content`
+
+
 # Passwords
 
+
 ## Reset Password
+
+> Sample request
+
+```cURL
+curl -X POST http://api.instagift.com/v2/passwords \
+  -H "Content-Type: application/json" \
+  -d '{"email":"person@example.com"}' \
+
+```
+
+> Sample response
+
+```json
+{
+  "data": {
+    "title": "Password reset sent",
+    "email": "person@example.com"
+  }
+}
+  ```
+
+### HTTP Request
+
+`POST https://api.instagift.com/v2/passwords` <code class="prettyprint public">PUBLIC</code>
+
+### HTTP Parameters
+
+Parameter | Required | Description
+--------- | --------- | -----------
+email | true | A valid email address for an Instagift user account
+
+
+### Response
+
+`201 Created`
+
+Parameter | Description
+--------- | -----------
+title |
+email | New password sent to this email address
+
 
 # Certificates
 
