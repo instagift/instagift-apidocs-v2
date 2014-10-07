@@ -10,19 +10,31 @@ includes:
 search: true
 ---
 
-# Introduction
+# API Overview
 
 Welcome to the Instagift API. This API exposes some select endpoints for interacting
-with Instagift's data. The format of the API closely follows
+with Instagift data. The API is JSON only, and closely follows to format of
 <a href="http://jsonapi.org/" target="_blank">JSON API</a>.
 
-# Consumer Access
+### Authentication
 
-Both users and merchants can authenticate using request headers.
-Each endpoint that requires authentication requires the proper authentication headers be included.
+### Rate Limiting
 
-## User Authentication
+### Support
 
+# Authentication
+
+Both users and merchants can authenticate by setting a combination of two HTTP request headers
+('X-User-Email' and 'X-User-Token' for users and 'X-Merchant-Key' and 'X-Merchant-Secret' for merchants).
+Throughout this doc,
+endpoints that require user and/or merchant authentication will be marked like this:
+
+* User
+* Merchant
+
+Shell examples will not include authentication headers.
+
+## Authenticating a User
 
 > Sample request including user authentication headers
 
@@ -38,7 +50,7 @@ Parameter | Required | Description
 X-User-Email | true | A valid email for an Instagift user account
 X-User-Token | true | See [Request User Token](#request-user-token)
 
-### Authenticated User Endpoints
+### User Endpoints
 
 Endpoint | Description
 --------- | -----------
@@ -53,6 +65,46 @@ GET /v2/redemptions/{redemptions.id} | [Get Redemption Details](#)
 POST /v2/certificates/{certificates.id}/gifts | [Send Gift](#)
 GET /v2/users/{users.id}/gifts | [Get Gift Collection](#)
 GET /v2/gifts/{gifts.id} | [Get Gift Details](#)
+
+## Authenticating a Merchant
+
+Merchant's can generate API keys in their Instagift Merchant Dashboard.
+
+> Sample request including merchant authentication headers
+
+```shell
+curl -X GET -H "Content-Type: application/json" \
+  -H "X-Merchant-Key: OWqqv2rwnWucQC22CVwvMg" \
+  -H "X-Merhcant-Secret: 1WngOCryMpl1l7fXH7DIYA" \
+  https://api.instagift.com/v2/sample/endpoint
+```
+
+### HTTP Headers
+
+Include these HTTP headers in each API request for authentication.
+
+Parameter | Required | Description
+--------- | --------- | -----------
+X-Merchant-Key | true | Generated from the Merchant Dashboard
+X-Merchant-Secret | true | Generated from the Merchant Dashboard
+
+### Merchant Endpoints
+
+Merchants have access to the following API endpoints. Authentication required.
+
+Endpoint | Description
+--------- | -----------
+GET /v2/merchants/{merchants.id}/certificates | [List all Certificates](#)
+GET /v2/certificates/{certificates.id} | [Fetch a Certificate by ID](#)
+POST /v2/certificates/{certificates.id}/redemptions | [Redeem a Certificate by ID](#)
+GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Code](#)
+POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem Certificate by Claim Code](#)
+GET /v2/merchants/{merchants.id}/redemptions | [List all Redemptions](#)
+GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption by ID](#)
+
+
+# User Tokens
+
 
 ## Request User Token
 
@@ -115,7 +167,11 @@ gifts | A collection of gifts for this user
 
 ## Reset User Token
 
+# Passwords
+
 ## Reset Password
+
+# Certificates
 
 ## List all Certificates
 ## Fetch a Certificate
@@ -123,60 +179,26 @@ gifts | A collection of gifts for this user
 ## Split a Certificate
 ## Gift a Certificate
 ## Claim a Certificate
+
+# Redemptions
+
 ## List all Redemptions
 ## Fetch a Redemption
+
+# Gifts
+
 ## List all Gifts for a User
 
 # Merchant Access
 
-## API Keys
+# Claim Codes
 
-Merchant's can generate API keys in their Instagift Merchant Dashboard.
-
-> Sample request including merchant authentication headers
-
-```shell
-curl -X GET -H "Content-Type: application/json" \
-  -H "X-Merchant-Key: OWqqv2rwnWucQC22CVwvMg" \
-  -H "X-Merhcant-Secret: 1WngOCryMpl1l7fXH7DIYA" \
-  https://api.instagift.com/v2/sample/endpoint
-```
-
-### HTTP Headers
-
-Include these HTTP headers in each API request for authentication.
-
-Parameter | Required | Description
---------- | --------- | -----------
-X-Merchant-Key | true | Generated from the Merchant Dashboard
-X-Merchant-Secret | true | Generated from the Merchant Dashboard
-
-### Merchant Endpoints
-
-Merchants have access to the following API endpoints. Authentication required.
-
-Endpoint | Description
---------- | -----------
-GET /v2/merchants/{merchants.id}/certificates | [List all Certificates](#)
-GET /v2/certificates/{certificates.id} | [Fetch a Certificate by ID](#)
-POST /v2/certificates/{certificates.id}/redemptions | [Redeem a Certificate by ID](#)
-GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Code](#)
-POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem Certificate by Claim Code](#)
-GET /v2/merchants/{merchants.id}/redemptions | [List all Redemptions](#)
-GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption by ID](#)
-
-## List all Certificates
-## Fetch a Certificate by ID
-## Redeem a Certificate by ID
 ## Fetch a Certificate by Claim Code
 ## Redeem a Certificate by Claim Code
-## List all Redemptions
-## Fetch a Redemption
 
 # Support Tickets
 
 ## Create a Support Ticket
-
 
 # Markdown Examples
 
