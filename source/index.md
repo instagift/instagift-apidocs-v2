@@ -254,6 +254,11 @@ email | New password sent to this email address
 ## Gift a Certificate
 ## Claim a Certificate
 
+# Claim Codes
+
+## Fetch a Certificate by Claim Code
+## Redeem a Certificate by Claim Code
+
 # Redemptions
 
 ## List all Redemptions
@@ -262,13 +267,6 @@ email | New password sent to this email address
 # Gifts
 
 ## List all Gifts for a User
-
-# Merchant Access
-
-# Claim Codes
-
-## Fetch a Certificate by Claim Code
-## Redeem a Certificate by Claim Code
 
 # Support Tickets
 
