@@ -12,9 +12,9 @@ search: true
 
 # API Overview
 
-This API provides Instagift merchants and users the ability to read and interact
-with select Instagift data. The Instagift service is exposed as an HTTP API, so that it can be used from any language.
-It accepts and returns JSON only, and closely follows to format of
+This API provides Instagift merchants and consumers the ability to read and interact
+with select Instagift data. It is exposed as an HTTP API, so that it can be used from any language.
+It accepts and returns JSON only, and closely follows the format of
 <a href="http://jsonapi.org/" target="_blank">JSON API</a>.
 
 ## Authentication
