@@ -475,9 +475,9 @@ html, body {
     @extend %code-font;
   }
 
-  code.user { background-color: rgba(255,255,255,1); }
-  code.merchant { background-color: rgba(255,255,255,1); }
-  code.public { background-color: rgba(255,255,255,1); }
+  code.user { background-color: #F1D4AF; }
+  code.merchant { background-color: #A7DBD8; }
+  code.public { background-color: #CAD7B2; }
 
   aside {
     padding-top: 1em;
