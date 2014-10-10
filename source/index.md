@@ -87,18 +87,17 @@ The following API endpoints are accessible without user or merchant authenticati
 
 Endpoint | Description
 --------- | -----------
-POST /v2/users | [Create a User](#create-a-user)
-POST /v2/tokens | [Request User Token](#request-user-token)
-DELETE /v2/tokens | [Reset User Token](#reset-user-token)
-POST /v2/passwords | [Reset User Password](#reset-password)
-GET /v2/merchants/:merchant_id | [Fetch a Merchant](#fetch-a-merchant)
 GET /v2/locations/:location_id | [Fetch a Location](#fetch-a-location)
+GET /v2/merchants/:merchant_id/locations | [List all Locations for a Merchant](#list-all-locations-for-a-merchant)
+GET /v2/products/:product_id/locations | [List all Redemption Locations for a Product](#list-redemption-locations-for-a-product)
+GET /v2/merchants/:merchant_id | [Fetch a Merchant](#fetch-a-merchant)
+POST /v2/passwords | [Reset User Password](#reset-password)
 GET /v2/products/:product_id | [Fetch a Product](#fetch-a-product)
 GET /v2/product_options/:product_option_id | [Fetch a Product Option](#fetch-a-product-option)
-GET /v2/merchants/:merchant_id/locations | [List all Locations for a Product](#list-all-locations-for-a-merchant)
-GET /v2/products/:product_id/locations | [List all Redemption Locations for a Product](#list-redemption-locations-for-a-product)
 GET /v2/products/:product_id/product_options | [List all Product Options for a Product](#list-product-options-for-a-product)
 POST /v2/support_tickets | [Create a Support Ticket](#create-a-support-ticket)
+POST /v2/users | [Create a User](#create-a-user)
+POST /v2/tokens | [Request User Token](#request-user-token)
 
 ## User Endpoints
 
@@ -107,17 +106,18 @@ The following API endpoints are accessible with valid user authentication, see
 
 Endpoint | Description
 --------- | -----------
+GET /v2/certificates/:certificate_id | [Fetch a Certificate](#fetch-a-certificate)
+GET /v2/certificates | [List all Certificates](#list-all-certificates)
+POST /v2/certificates/:certificate_id/certificates | [Split a Certificate](#split-a-certificate)
+POST /v2/certficates/:certificate_id/redemptions | [Redeem a Certificate](#redeem-a-certificate)
+POST /v2/certificates/:certificate_id/gifts | [Gift a Certificate](#gift-a-certificate)
+PUT /v2/certificates/:certificate_id/gifts | [Claim a Certificate by Claim Code](#claim-a-certificate-by-claim-code)
+GET /v2/gifts/:gift_id | [Fetch a Gift](#fetch-a-gift)
+GET /v2/gifts | [List all Gifts](#list-all-gifts)
+GET /v2/redemptions/:redemption_id | [Fetch a Redemption](#fetch-a-redemption)
+GET /v2/redemptions | [List all Redemptions](#list-all-redemptions)
+GET /v2/users/:user_id | [Fetch a User](#fetch-a-user)
 DELETE /v2/tokens | [Reset Token](#reset-user-token)
-GET /v2/users/:user_id | [Get User Details](#)
-GET /v2/certificates | [Get Certificates Collection](#)
-GET /v2/certificates/:certificate_id | [Get Certificate Details](#)
-POST /v2/certificates/:certificate_id/certificates | [Split Certificate Value](#)
-POST /v2/certficates/:certificate_id/redemptions | [Redeem Certificate](#)
-GET /v2/redemptions | [Get Redemptions Collection](#)
-GET /v2/redemptions/:redemption_id | [Get Redemption Details](#)
-POST /v2/certificates/:certificate_id/gifts | [Send Gift](#)
-GET /v2/gifts | [Get Gift Collection](#)
-GET /v2/gifts/:gift_id | [Get Gift Details](#)
 
 ## Merchant Endpoints
 
@@ -127,13 +127,14 @@ Merchant's can generate API keys from their Instagift Merchant Dashboard.
 
 Endpoint | Description
 --------- | -----------
-GET /v2/certificates | [List all Certificates](#)
-GET /v2/certificates/{certificates.id} | [Fetch a Certificate by ID](#)
-POST /v2/certificates/{certificates.id}/redemptions | [Redeem a Certificate by ID](#)
-GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Code](#)
-POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem Certificate by Claim Code](#)
-GET /v2/redemptions | [List all Redemptions](#)
-GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption by ID](#)
+GET /v2/certificates/{certificates.id} | [Fetch a Certificate](#fetch-a-certificate)
+GET /v2/certificates | [List all Certificates](#list-all-certificates)
+POST /v2/certificates/{certificates.id}/redemptions | [Redeem a Certificate](#redeem-a-certificate)
+GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Code](#fetch-a-certificate-by-claim-code)
+POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem a Certificate by Claim Code](#redeem-a-certificate-by-claim-code)
+GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption](#fetch-a-redemption)
+GET /v2/redemptions | [List all Redemptions](#list-all-redemptions)
+GET /v2/redemptions | [Fetch a User](#fetch-a-user)
 
 
 <!--
@@ -1360,7 +1361,7 @@ curl -X POST http://api.instagift.com/v2/users \
 }
 ```
 
-`GET /v2/users/:user_id` <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code>
+`GET /v2/users/:user_id` <code class="prettyprint public">PUBLIC</code>
 
 ### Request
 
