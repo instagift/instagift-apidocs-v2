@@ -321,7 +321,7 @@ Name | Description
 
 ```cURL
 curl https://api.instagift.com/v2/certificates
-curl https://api.instagift.com/v2/certificates?status=available&product_type=Event&page=2
+curl https://api.instagift.com/v2/certificates?status=available&product_type=Event&list_type=available&page=2
 ```
 
 > Sample response
@@ -388,7 +388,7 @@ curl https://api.instagift.com/v2/certificates?status=available&product_type=Eve
 
 Parameter | Required | Description
 --------- | --------- | -----------
-status | false | Possible statuses: 'all' and 'available'. Defaults to all. <code class="prettyprint user">USER</code>
+list_type | false | Possible statuses: 'all' and 'available'. Defaults to all. <code class="prettyprint user">USER</code>
 product_type | false | Possible product_types: 'Deal', 'Event', 'GiftCertificate'. Defaults to all types. <code class="prettyprint user">USER</code>
 page | false | 1 to n. Defaults to 1.
 
