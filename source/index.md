@@ -95,6 +95,9 @@ GET /v2/merchants/:merchant_id | [Fetch a Merchant](#fetch-a-merchant)
 GET /v2/locations/:location_id | [Fetch a Location](#fetch-a-location)
 GET /v2/products/:product_id | [Fetch a Product](#fetch-a-product)
 GET /v2/product_options/:product_option_id | [Fetch a Product Option](#fetch-a-product-option)
+GET /v2/merchants/:merchant_id/locations | [List all Locations for a Product](#list-all-locations-for-a-merchant)
+GET /v2/products/:product_id/locations | [List all Redemption Locations for a Product](#list-redemption-locations-for-a-product)
+GET /v2/products/:product_id/product_options | [List all Product Options for a Product](#list-product-options-for-a-product)
 POST /v2/support_tickets | [Create a Support Ticket](#create-a-support-ticket)
 
 ## User Endpoints
@@ -380,7 +383,7 @@ curl https://api.instagift.com/v2/certificates?status=available&product_type=Eve
 
 `GET /v2/certificates` <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code>
 
-### HTTP Parameters
+### Request Parameters
 
 Parameter | Required | Description
 --------- | --------- | -----------
@@ -437,7 +440,7 @@ curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/ce
 
 `POST /v2/certificates/:certificate_id/certificates` <code class="prettyprint user">USER</code>
 
-### HTTP Parameters
+### Request Parameters
 
 Parameter | Required | Description
 --------- | --------- | -----------
@@ -445,7 +448,7 @@ face_value_cents | false | Possible product_types: 'Deal', 'Event', 'GiftCertifi
 
 ### Response
 
-In a successful split, two unexpanded [certificate objects](#list-all-certificates) are returned.
+In a successful split, two unexpanded [certificates](#list-all-certificates) are returned.
 The child certificate will have a parent relationship pointing to the original certificate.
 
 ## Redeem a Certificate
@@ -478,7 +481,7 @@ curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/gi
 
 `POST /v2/certificates/:certificate_id/redemptions` <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code>
 
-### HTTP Parameters
+### Request Parameters
 
 Parameter | Required | Description
 --------- | --------- | -----------
@@ -521,7 +524,7 @@ curl -X POST http://api.instagift.com/v2/certificates/fBkhLlMVLUYpFOjkAvMTbQ/gif
 
 `POST /v2/certificates/:certificate_id/gifts` <code class="prettyprint user">USER</code>
 
-### HTTP Parameters
+### Request Parameters
 
 Parameter | Required | Description
 --------- | --------- | -----------
@@ -568,20 +571,22 @@ See [Fetch a Gift](#fetch-a-gift)
 
 # Comps
 
+Coming Soon
+
+<!--
 ## Send Comps to an Email(s)
-Coming soon
+-->
 
 # Customers
 
-## Create a Customer
-Coming soon
-## List all Customers
-Coming soon
-## Fetch a Customer
-Coming soon
-## Comp a Customer
-Coming soon
+Coming Soon
 
+<!--
+## Create a Customer
+## List all Customers
+## Fetch a Customer
+## Comp a Customer
+-->
 
 <!--
 ################################################################################
@@ -691,7 +696,7 @@ curl http://api.instagift.com/v2/gifts
 
 ### Response
 
-An array of [gift objects](#fetch-a-gift)
+Array of [gifts](#fetch-a-gift)
 
 
 <!--
@@ -712,6 +717,32 @@ curl https://api.instagift.com/v2/locations/AzoXEYPYxG3OUaKJi234WQ
 > Sample response
 
 ```json
+{
+    "links": {
+        "locations.merchant": "/v2/merchants/{locations.merchant}"
+    },
+    "locations": [
+        {
+            "id": "_xVSvoERC3KV6vdcKWgjIw",
+            "href": "/v2/locations/_xVSvoERC3KV6vdcKWgjIw",
+            "display": "Tuscan Kitchen, Tuscan Kitchen 2, 100 Main St., Ste 2, Pleasantville, KS",
+            "name": "Tuscan Kitchen 2",
+            "address1": "100 Main St.",
+            "address2": "Ste 2",
+            "city": "Pleasantville",
+            "state": "KS",
+            "zip": "67502",
+            "phone": "3166620036",
+            "lat": 38.081600000000,
+            "lng": -97.931500000000,
+            "links": {
+                "merchant": "BZegPI8u-9Qj8UCVfxosbw"
+            },
+            "created_at": "2014-10-10T13:17:13Z",
+            "updated_at": "2014-10-10T13:17:13Z"
+        }
+    ]
+}
 ```
 
 `GET /v2/locations/:location_id` <code class="prettyprint public">PUBLIC</code>
@@ -721,12 +752,97 @@ curl https://api.instagift.com/v2/locations/AzoXEYPYxG3OUaKJi234WQ
 Parameter | Description
 --------- | -----------
 href | Resource URL for this location, will respond to GET requests
+display | String combining the name, address, city and state for convenience
+name | Null allowed. Useful to explain a merchant's multiple locations
+address1 | Required
+address2 | Null allowed
+city |
+state | Standard USPS or ANSI two letter code
+zip | Standard 5 or 9 digit US zip code
+phone | 10 digits, unformatted.
+lat | Null allowed
+lng | Null allowed
 
 ### Relationships
 
 Name | Description
 --------- | --------- | -----------
 [merchant](#fetch-a-merchant) | Merchant details for this certificate
+
+## List all Locations for a Merchant
+
+> Sample request
+
+```cURL
+curl https://api.instagift.com/v2/merchants/AzoXEYPYxG3OUaKJi234WQ/locations
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "locations.merchant": "/v2/merchants/{locations.merchant}"
+    },
+    "locations": [
+        {
+            "id": "aU1Tefis_JCcbHhs0Rl30g",
+            "href": "/v2/locations/aU1Tefis_JCcbHhs0Rl30g",
+            "...": "...",
+            "links": {
+                "merchant": "yk2aWtv97ZbEjVH0E_511g"
+            }
+        },
+        {
+            "...": "..."
+        }
+    ]
+}
+```
+
+`GET /v2/merchant/:merchant_id/locations` <code class="prettyprint public">PUBLIC</code>
+
+### Response
+
+Array of [locations](#fetch-a-location)
+
+## List Redemption Locations for a Product
+
+> Sample request
+
+```cURL
+curl https://api.instagift.com/v2/products/LJJ306Z-MDQs6ppbP_55TQ/locations
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "locations.product": "/v2/products/{locations.product}"
+    },
+    "locations": [
+        {
+            "id": "LJJ306Z-MDQs6ppbP_55TQ",
+            "href": "/v2/locations/LJJ306Z-MDQs6ppbP_55TQ",
+            "...": "...",
+            "links": {
+                "product": "VYDlYME879dbz7Mj0JoLsA"
+            }
+        },
+        {
+            "...": "..."
+        }
+    ]
+}
+```
+
+`GET /v2/product/:product_id/locations` <code class="prettyprint public">PUBLIC</code>
+
+### Response
+
+Array of [locations](#fetch-a-location)
+
 
 <!--
 ################################################################################
@@ -746,6 +862,23 @@ curl https://api.instagift.com/v2/merchants/AzoXEYPYxG3OUaKJi234WQ
 > Sample response
 
 ```json
+{
+    "links": {
+        "merchants.locations": "/v2/merchants/{merchants.id}/locations"
+    },
+    "merchants": [
+        {
+            "id": "PiIxGa518njpRGYCSXrarg",
+            "href": "/v2/merchants/PiIxGa518njpRGYCSXrarg",
+            "url": "http://tuscankitchen.instagift.com/",
+            "name": "Tuscan Kitchen",
+            "time_zone": "Eastern Time (US & Canada)",
+            "logo": "/logos/original/missing.png",
+            "created_at": "2014-10-10T14:05:32Z",
+            "updated_at": "2014-10-10T14:05:32Z"
+        }
+    ]
+}
 ```
 
 `GET /v2/merchants/:merchant_id` <code class="prettyprint public">PUBLIC</code>
@@ -760,7 +893,12 @@ href | Resource URL for this merchant, will respond to GET requests
 
 Name | Description
 --------- | --------- | -----------
-[locations](#fetch-a-location) | Merchant details for this certificate
+[locations](#fetch-a-location) | Array of a merchant's locations
+
+## Generate an API Key
+
+Coming soon
+
 
 <!--
 ################################################################################
@@ -793,7 +931,7 @@ curl -X POST http://api.instagift.com/v2/passwords \
 
 `POST /v2/passwords` <code class="prettyprint public">PUBLIC</code>
 
-### HTTP Parameters
+### Request Parameters
 
 Parameter | Required | Description
 --------- | --------- | -----------
@@ -823,6 +961,41 @@ curl https://api.instagift.com/v2/products/AzoXEYPYxG3OUaKJi234WQ
 > Sample response
 
 ```json
+{
+    "links": {
+        "products.merchant": "/v2/merchants/{products.merchant}",
+        "products.redemption_locations": "/v2/products/{products.id}/locations",
+        "products.product_options": "/v2/products/{products.id}/product_options"
+    },
+    "products": [
+        {
+            "id": "Kpu_xWu_0jy746VfKMO4ag",
+            "href": "http://tuscankitchen.instagift.com/gift-card",
+            "type": "GiftCertificate",
+            "discount_sale_name": null,
+            "is_giveaway": false,
+            "can_split_value": true,
+            "gift_card_image": "//s3.amazonaws.com/assets.dealcoop.com/gift_cards/63001/original.jpg?1386187921",
+            "photos": [],
+            "headline": null,
+            "tagline": "Tuscan Kitchen eGift Card",
+            "terms": [
+                "Good on any food or drink",
+                "Can be used on tax and gratuity",
+                "Does not expire",
+                "Merchant are not required to give change for the unused balance"
+            ],
+            "expiration_instructions": "Unless otherwise noted, this gift card NEVER EXPIRES",
+            "redemption_instructions": "This gift card can be redeemed at the locations listed at http://tuscankitchen.instagift.com/gift-card",
+            "merchant_instructions": "This gift card originated from the Instagift.com online store for Tuscan Kitchen located at http://tuscankitchen.instagift.com/ Your staff should be trained to accept and validate gifts cards as they arrive. If you have questions, please ask your manager or e-mail support@instagift.com",
+            "links": {
+                "merchant": "KnWauxXPaBrwd4xnmUoqCA"
+            },
+            "created_at": "2014-10-10T14:55:42Z",
+            "updated_at": "2014-10-10T14:55:42Z"
+        }
+    ]
+}
 ```
 
 `GET /v2/products/:product_id` <code class="prettyprint public">PUBLIC</code>
@@ -832,13 +1005,25 @@ curl https://api.instagift.com/v2/products/AzoXEYPYxG3OUaKJi234WQ
 Parameter | Description
 --------- | -----------
 href | Resource URL for this product, will respond to GET requests
+type | GiftCertificate, Event, or Deal
+discount_sale_name | Some type=Deal belong to this special kind of sale
+is_giveaway | Was this issued as a comp, reward, or giveaway?
+can_split_value | Certificate face value can be split
+gift_card_image | Image of the gift card
+photos[] | Events and Deals can include a photo gallery
+headline | Short title, null for type=GiftCertificate
+tagline | Longer title
+terms[] | The fine print for a product
+expiration_instructions | Details about the expiration of this product, and its certificates
+redemption_instructions | Intended for consumers, how to redeem certificates
+merchant_instructions | Intended for merchant staff, explanation of what and where the certificates came from
 
 ### Relationships
 
 Name | Description
 --------- | --------- | -----------
 [merchant](#fetch-a-merchant) | Merchant details for this certificate
-[location](#fetch-a-location) | Location details for each product redemption location
+[redemption_locations](#fetch-a-location) | Location details for each product redemption location
 [product_options](#fetch-a-product-option) | Pricing/purchase options for this product
 
 
@@ -854,27 +1039,94 @@ Name | Description
 > Sample request
 
 ```cURL
-curl https://api.instagift.com/v2/locations/AzoXEYPYxG3OUaKJi234WQ
+curl https://api.instagift.com/v2/product_options/AzoXEYPYxG3OUaKJi234WQ
 ```
 
 > Sample response
 
 ```json
+{
+    "links": {
+        "product_options.product": "/v2/products/{product_options.product}"
+    },
+    "product_options": [
+        {
+            "id": "uWlrlf8fBTseVC5gF96H5w",
+            "href": "/v2/product_options/uWlrlf8fBTseVC5gF96H5w",
+            "currency": "USD",
+            "face_value_cents": 10000,
+            "price_cents": 10000,
+            "tagline": "$100 Gift Card",
+            "count": null,
+            "limit_per_order": null,
+            "is_recommended": true,
+            "links": {
+                "product": "udTPAbSavpDKUjqcUPyPMQ"
+            },
+            "created_at": "2014-10-10T15:08:29Z",
+            "updated_at": "2014-10-10T15:08:29Z"
+        }
+    ]
+}
 ```
 
-`GET /v2/locations/:location_id` <code class="prettyprint public">PUBLIC</code>
+`GET /v2/product_options/:product_option_id` <code class="prettyprint public">PUBLIC</code>
 
 ### Response
 
 Parameter | Description
 --------- | -----------
-href | Resource URL for this certificate, will respond to GET requests
+href | Resource URL for this product option, will respond to GET requests
+currency | ISO 4217 currency codes. Most likely "USD"
+face_value_cents | Amount certificates from this product_option can be redeemed for
+price_cents | Price consumers will pay for certificates from this product_option
+tagline | Helpful to describe the differences between product options for a product
+count | Inventory. Null means unlimited
+limit_per_order | Number consumers are allowed to purchase per order
+is_recommended | The option that the merchant or Instagift recommend that a consumer purchase
 
 ### Relationships
 
 Name | Description
 --------- | --------- | -----------
-[merchant](#fetch-a-merchant) | Merchant details for this certificate
+[product](#fetch-a-product) | Product this pricing option belongs to
+
+## List Product Options for a Product
+
+> Sample request
+
+```cURL
+curl https://api.instagift.com/v2/products/AzoXEYPYxG3OUaKJi234WQ/product_options
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "product_options.product": "/v2/products/{product_options.product}"
+    },
+    "product_options": [
+        {
+            "id": "aT6dCx3pRkoMgCnoAfrlpA",
+            "href": "/v2/product_options/aT6dCx3pRkoMgCnoAfrlpA",
+            "...": "...",
+            "links": {
+                "product": "FBHf_LcvfYsMqEFxf1Dmdg"
+            }
+        },
+        {
+            "...": "..."
+        }
+    ]
+}
+```
+
+`GET /v2/products/:product_id/product_options` <code class="prettyprint public">PUBLIC</code>
+
+### Response
+
+Array of [product options](#fetch-a-product-option)
 
 
 <!--
@@ -974,7 +1226,7 @@ curl http://api.instagift.com/v2/redemptions
 
 ### Response
 
-An array of [redemption objects](#fetch-a-redemption)
+Array of [redemptions](#fetch-a-redemption)
 
 
 <!--
@@ -984,8 +1236,41 @@ An array of [redemption objects](#fetch-a-redemption)
 
 # Support Tickets
 
+Comin soon, sample requests and responses included for testing. Subject to change.
+
 ## Create a Support Ticket
-Coming soon
+
+> Sample request
+
+```cURL
+curl -X POST http://api.instagift.com/v2/support_tickets \
+    -H "Content-Type: application/json" \
+    -d '{"name":"John Doe,"email":"person@example.com","message":"I can't access my account"}'
+```
+
+> Sample response
+
+```json
+{
+    "data": {
+        "title": "..."
+    }
+}
+```
+
+`POST /v2/support_tickets` <code class="prettyprint public">PUBLIC</code>
+
+### Request
+
+Parameter | Required | Description
+--------- | ----------- |----------
+name | true | Requester's name
+email | true | Requester's email address
+message | true | Description of the support issue or question
+
+### Response
+
+`201 Created`
 
 
 <!--
@@ -995,9 +1280,102 @@ Coming soon
 
 # Users
 
+## Fetch a User
+
+> Sample request
+
+```cURL
+curl http://api.instagift.com/v2/users/sYdLUTYH8eVD-p6zIVn30g
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "user.certificates": "/v2/user/{users.id}/certificates",
+        "user.sent_gifts": "/v2/user/{users.id}/gifts",
+        "user.redemptions": "/v2/user/{users.id}/redemptions"
+    },
+    "users": [
+        {
+            "id": "sYdLUTYH8eVD-p6zIVn30g",
+            "href": "/v2/users/728",
+            "name": "John Doe",
+            "email": "person@example.com",
+            "authentication_token": "nh6W4t-ffsbT-xRp6k_h",
+            "last_login_at": "2014-10-10T15:39:36Z",
+            "created_at": "2014-10-10T15:39:36Z",
+            "updated_at": "2014-10-10T15:39:36Z"
+        }
+    ]
+}
+```
+
+`GET /v2/users/:user_id` <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code>
+
+### Response
+
+Parameter | Description
+--------- | -----------
+href | Resource URL for this product option, will respond to GET requests
+name | User's registered name
+email | User's email, used for authentication, order confirmations, notifications, etc. Only visible to an authenticated user.
+authentication_token | Used for API authentication. Only visible to an authenticated user.
+last_login_at | Datetime the user last logged in to Instagift
+
+### Relationships
+
+Name | Description
+--------- | --------- | -----------
+[certificates](#fetch-a-certificate) | A list of a user's certificates
+[gifts](#fetch-a-gift) | Both sent and received gifts
+[redemptions](#fetch-a-redemption) | A list of a user's redemptions
+
 ## Create a User
 
-## Fetch a User
+> Sample request
+
+```cURL
+curl -X POST http://api.instagift.com/v2/users \
+    -H "Content-Type: application/json" \
+    -d '{"user":{"email":"person@example.com","password":"testing1234","password_confirmation":"testing12345","first_name":"John","last_name":"Doe"}}'
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "...": "..."
+    },
+    "users": [
+        {
+            "id": "sYdLUTYH8eVD-p6zIVn30g",
+            "href": "/v2/users/728",
+            "authentication_token": "nh6W4t-ffsbT-xRp6k_h",
+            "...": "..."
+        }
+    ]
+}
+```
+
+`GET /v2/users/:user_id` <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code>
+
+### Request
+
+Parameter | Required | Description
+--------- | ----------- | -----------
+user | true | A JSON object of a user's registration info. { "user" : { "email" : "person@example.com", "password" : "testing1234", "password_confirmation" : "testing12345", "first_name" : "John", "last_name"  : "Doe" } }
+user.email | true | Must be valid and not already registered
+user.password | true | Must be at least 5 characters
+user.password_confirmation | true | Must match password
+user.first_name | false |
+user.last_name | false |
+
+### Response
+
+`201 Created` See [Fetch a User](#fetch-a-user)
 
 
 <!--
@@ -1040,7 +1418,7 @@ curl -X POST http://api.instagift.com/v2/tokens \
 
 `POST /v2/tokens` <code class="prettyprint public">PUBLIC</code>
 
-### HTTP Parameters
+### Request Parameters
 
 Parameter | Required | Description
 --------- | --------- | -----------
