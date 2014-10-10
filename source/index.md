@@ -473,7 +473,7 @@ curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/gi
         {
             "id": "f_OGwyVpgEBgRf-nh-0faA",
             "href": "/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA",
-            "amount_cents": 10000,
+            "amount_cents": 4000,
             "...": "..."
         }
     ]
@@ -554,15 +554,149 @@ See [Fetch a Gift](#fetch-a-gift)
 
 ## Fetch a Certificate by Claim Code
 
+> Sample request
+
+```cURL
+curl https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "certificates.user": "/v2/users/{certificates.user}",
+        "certificates.parent": "/v2/certificates/{certificates.parent}",
+        "certificates.merchant": "/v2/merchants/{certificates.merchant}",
+        "certificates.product": "/v2/merchants/{certificates.product}"
+    },
+    "certificates": [
+        {
+            "id": "sD-2VrA6hxAj8FVnoSc_gw",
+            "parent_id": null,
+            "href": "/v2/certificates/sD-2VrA6hxAj8FVnoSc_gw",
+            "product_type": "GiftCertificate",
+            "claim_code": "E69W-CDQ2-WTWH6Y",
+            "redeem_code": "WTWH6Y",
+            "status": "assigned",
+            "marked_as_printed": false,
+            "can_split_value": true,
+            "qrcode_image": "/system/qrcodes/sD-2VrA6hxAj8FVnoSc_gw.png",
+            "currency": "USD",
+            "face_value_cents": 10000,
+            "price_cents": 10000,
+            "seller": "Tuscan Kitchen",
+            "title": "$100 Tuscan Kitchen eGift Card",
+            "thumb": null,
+            "links": {
+                "user": "srX0Fin8wFfJ1TEcffTj0w",
+                "merchant": "NNA6XfwMj9XUCf58V1_u-Q",
+                "product": "tQpEkvBp2E0oH1zRiP6RLQ",
+                "product_option": "RjOWgOhoYf-SETVcyMjJEw"
+            },
+            "expires_at": null,
+            "created_at": "2014-10-08T18:15:21Z",
+            "updated_at": "2014-10-08T18:15:21Z"
+        }
+    ]
+}
+```
+
 `GET /v2/claim_code/:claim_code` <code class="prettyprint merchant">MERCHANT</code>
+
+### Response
+
+Certificate relationships are not expanded in claim code view. See [Fetch a Certificate](#fetch-a-certificate) for expanded response.
+
+### Relationships
+
+See [Fetch a Certificate](#fetch-a-certificate)
 
 ## Redeem a Certificate by Claim Code
 
+> Sample request(s)
+
+```cURL
+curl -X POST https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y/redemptions \
+-H "Content-Type: application/json" \
+-d '{"amount_to_redeem_cents":"4000"}' \
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "...": "..."
+    },
+    "redemptions": [
+        {
+            "id": "f_OGwyVpgEBgRf-nh-0faA",
+            "href": "/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA",
+            "amount_cents": 4000,
+            "...": "..."
+        }
+    ]
+}
+```
+
 `POST /v2/claim_codes/:claim_code/redemptions` <code class="prettyprint merchant">MERCHANT</code>
+
+### Request Parameters
+
+Parameter | Required | Description
+--------- | --------- | -----------
+amount_to_redeem_cents | false | Amount to redeem. If none is passed, the entire certificate face value is redeemed.
+
+### Response
+
+`201 Created` See [Fetch a Redemption](#fetch-a-redemption)
+
+### Relationships
+
+See [Fetch a Redemption](#fetch-a-redemption)
 
 ## Claim a Certificate by Claim Code
 
+> Sample request(s)
+
+```cURL
+curl -X PUT https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y
+```
+
+> Sample response
+
+```json
+{
+    "links": {
+        "certificates.user": "/v2/users/{certificates.user}",
+        "...": "..."
+    },
+    "certificates": [
+        {
+            "id": "hD65TJvxnv8oIuyOmD056w",
+            "href": "/v2/certificates/hD65TJvxnv8oIuyOmD056w",
+            "...": "...",
+            "links": {
+                "user": "7_JyTOaJuGD5ahUdWGvcnw",
+                "...":"..."
+            }
+        }
+    ]
+}
+```
+
 `PUT /v2/claim_codes/:claim_code/certificates` <code class="prettyprint user">USER</code>
+
+### Request
+
+If a valid certificate with the claim code is found, the certificate ownership will update
+to the authenticated user making the request.
+
+### Response
+
+See [Fetch a Certificate](#fetch-a-certificate)
+
 
 
 <!--
