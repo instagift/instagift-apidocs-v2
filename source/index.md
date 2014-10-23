@@ -135,7 +135,7 @@ GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Co
 POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem a Certificate by Claim Code](#redeem-a-certificate-by-claim-code)
 GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption](#fetch-a-redemption)
 GET /v2/redemptions | [List all Redemptions](#list-all-redemptions)
-GET /v2/redemptions | [Fetch a User](#fetch-a-user)
+GET /v2/users | [Fetch a User](#fetch-a-user)
 
 
 <!--
@@ -458,7 +458,7 @@ The child certificate will have a parent relationship pointing to the original c
 > Sample request(s)
 
 ```cURL
-curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/gifts \
+curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/redemptions \
 -H "Content-Type: application/json" \
 -d '{"amount_to_redeem_cents":"4000"}' \
 ```
@@ -502,7 +502,7 @@ See [Fetch a Redemption](#fetch-a-redemption)
 > Sample request(s)
 
 ```cURL
-curl -X POST http://api.instagift.com/v2/certificates/fBkhLlMVLUYpFOjkAvMTbQ/gifts \
+curl -X POST https://api.instagift.com/v2/certificates/fBkhLlMVLUYpFOjkAvMTbQ/gifts \
     -H "Content-Type: application/json" \
     -d '{"gift":{"sender_name": "Sender Schmidt", "sender_reply_to": "sender@example.com", "recipient_name": "Receiver Rogers", "recipient_email": "receiver@example.com", "message": "Enjoy this gift!"}}' \
 ```
@@ -736,7 +736,7 @@ Coming Soon
 > Sample request
 
 ```cURL
-curl http://api.instagift.com/v2/gifts/Kk8dw5jSaf2oyzLMet9CLA/gifts
+curl https://api.instagift.com/v2/gifts/Kk8dw5jSaf2oyzLMet9CLA/gifts
 ```
 
 > Sample response
@@ -805,7 +805,7 @@ Name | Description
 > Sample request
 
 ```cURL
-curl http://api.instagift.com/v2/gifts
+curl https://api.instagift.com/v2/gifts
 ```
 
 > Sample response
@@ -1048,7 +1048,7 @@ Coming soon
 > Sample request
 
 ```cURL
-curl -X POST http://api.instagift.com/v2/passwords \
+curl -X POST https://api.instagift.com/v2/passwords \
   -H "Content-Type: application/json" \
   -d '{"email":"person@example.com"}' \
 
@@ -1335,7 +1335,7 @@ Name | Description
 > Sample request
 
 ```cURL
-curl http://api.instagift.com/v2/redemptions
+curl https://api.instagift.com/v2/redemptions
 ```
 
 > Sample response
@@ -1379,7 +1379,7 @@ Comin soon, sample requests and responses included for testing. Subject to chang
 > Sample request
 
 ```cURL
-curl -X POST http://api.instagift.com/v2/support_tickets \
+curl -X POST https://api.instagift.com/v2/support_tickets \
     -H "Content-Type: application/json" \
     -d '{"name":"John Doe,"email":"person@example.com","message":"I can't access my account"}'
 ```
@@ -1421,7 +1421,7 @@ message | true | Description of the support issue or question
 > Sample request
 
 ```cURL
-curl http://api.instagift.com/v2/users/sYdLUTYH8eVD-p6zIVn30g
+curl https://api.instagift.com/v2/users/sYdLUTYH8eVD-p6zIVn30g
 ```
 
 > Sample response
@@ -1473,7 +1473,7 @@ Name | Description
 > Sample request
 
 ```cURL
-curl -X POST http://api.instagift.com/v2/users \
+curl -X POST https://api.instagift.com/v2/users \
     -H "Content-Type: application/json" \
     -d '{"user":{"email":"person@example.com","password":"testing1234","password_confirmation":"testing12345","first_name":"John","last_name":"Doe"}}'
 ```
@@ -1526,7 +1526,7 @@ user.last_name | false |
 > Sample request
 
 ```cURL
-curl -X POST http://api.instagift.com/v2/tokens \
+curl -X POST https://api.instagift.com/v2/tokens \
   -H "Content-Type: application/json" \
   -d '{"user":{"email":"person@example.com","password":"testing1234"}}'
 ```
@@ -1585,7 +1585,7 @@ Name | Description
 > Sample request
 
 ```cURL
-curl -i -X DELETE http://api.instagift.com/v2/tokens \
+curl -i -X DELETE https://api.instagift.com/v2/tokens \
   -H "Content-Type: application/json" \
   -H "X-User-Email: person@example.com" \
   -H "X-User-Token: quhZKsGMSJc5eUAYm-FA" \
