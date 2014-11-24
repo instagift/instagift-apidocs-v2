@@ -137,6 +137,18 @@ GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption](#fetch-a-redemption)
 GET /v2/redemptions | [List all Redemptions](#list-all-redemptions)
 GET /v2/users | [Fetch a User](#fetch-a-user)
 
+## Ecommerce
+
+The following merchant authenticated endpoints should be used when integrating an ecommerce site with Instagift gift card redemptions.
+
+Endpoint | Description
+--------- | -----------
+GET /v2/claim_codes/{certificates.claim_code} | [Fetch a Certificate by Claim Code](#fetch-a-certificate-by-claim-code)
+POST /v2/claim_codes/{certificates.claim_code}/redemptions | [Redeem a Certificate by Claim Code](#redeem-a-certificate-by-claim-code)
+
+Please see the [Ecommerce Integration](#ecommerce-integration) section for more detailed instructions.
+
+
 
 <!--
 ################################################################################
@@ -170,7 +182,7 @@ curl https://api.instagift.com/v2/certificates/AzoXEYPYxG3OUaKJi234WQ
             "href": "/v2/certificates/hD65TJvxnv8oIuyOmD056w",
             "product_type": "GiftCertificate",
             "claim_code": "62DD-CV4T-R2NTM2",
-            "redeem_code": "R2NTM2",
+            "merchant_code": "R2NTM2",
             "status": "assigned",
             "marked_as_printed": false,
             "can_split_value": true,
@@ -293,7 +305,7 @@ Parameter | Description
 href | Resource URL for this certificate, will respond to GET requests
 product_type | GiftCertificate, Deal, or Event
 claim_code | Can be used to transfer certificate between user accounts
-redeem_code | Used by the merchant to redeem certificates
+merchant_code | Used by the merchant to redeem certificates
 status | Possible statuses: assigned, cancelled, gifted, pending, redeemed, cancelled, returned
 marked_as_printed | Certificate owner (user) has specified that he/she has printed the certificate
 can_split_value | true/false. Certificate face value can be split into smaller denominations
@@ -355,7 +367,7 @@ curl https://api.instagift.com/v2/certificates?status=available&product_type=Eve
             "href": "/v2/certificates/sD-2VrA6hxAj8FVnoSc_gw",
             "product_type": "GiftCertificate",
             "claim_code": "E69W-CDQ2-WTWH6Y",
-            "redeem_code": "WTWH6Y",
+            "merchant_code": "WTWH6Y",
             "status": "assigned",
             "marked_as_printed": false,
             "can_split_value": true,
@@ -578,7 +590,7 @@ curl https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y
             "href": "/v2/certificates/sD-2VrA6hxAj8FVnoSc_gw",
             "product_type": "GiftCertificate",
             "claim_code": "E69W-CDQ2-WTWH6Y",
-            "redeem_code": "WTWH6Y",
+            "merchant_code": "WTWH6Y",
             "status": "assigned",
             "marked_as_printed": false,
             "can_split_value": true,
@@ -641,6 +653,39 @@ curl -X POST https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y/redemptio
 }
 ```
 
+> Sample errors
+
+```json
+{
+    "errors": [
+        {
+            "code": "400",
+            "status": "Bad Request",
+            "details": "This item has previously been redeemed",
+            "title": "Unable to create redemption"
+        }
+    ]
+}
+{
+    "errors": [
+        {
+            "code": "401",
+            "status": "Unauthorized",
+            "title": "Permission denied"
+        }
+    ]
+}
+{
+    "errors": [
+        {
+            "code": "404",
+            "status": "Not Found",
+            "title": "Resource with that ID not found"
+        }
+    ]
+}
+```
+
 `POST /v2/claim_codes/:claim_code/redemptions` <code class="prettyprint merchant">MERCHANT</code>
 
 ### Request Parameters
@@ -652,6 +697,19 @@ amount_to_redeem_cents | false | Amount to redeem. If none is passed, the entire
 ### Response
 
 `201 Created` See [Fetch a Redemption](#fetch-a-redemption)
+
+### Errors
+
+Error response JSON includes "code", "status", "title", and "details". The HTTP status code should match the response "code".
+
+Code | Status | Title | Details
+--------- | --------- | ----------- | -----------
+400 | Bad Request | Unable to create redemption | That item is not available for redemption
+400 | Bad Request | Unable to create redemption | This item has previously been redeemed
+400 | Bad Request | Unable to create redemption | This item has been refunded to the customer
+400 | Bad Request | Unable to create redemption | You must select a redemption location
+401 | Unauthorized | Permission denied |
+404 | Not Found | Resource with that ID not found |
 
 ### Relationships
 
@@ -1110,6 +1168,7 @@ curl https://api.instagift.com/v2/products/AzoXEYPYxG3OUaKJi234WQ
             "type": "GiftCertificate",
             "discount_sale_name": null,
             "is_giveaway": false,
+            "is_print_only": false,
             "can_split_value": true,
             "gift_card_image": "//s3.amazonaws.com/assets.dealcoop.com/gift_cards/63001/original.jpg?1386187921",
             "photos": [],
@@ -1144,6 +1203,7 @@ href | Resource URL for this product, will respond to GET requests
 type | GiftCertificate, Event, or Deal
 discount_sale_name | Some type=Deal belong to this special kind of sale
 is_giveaway | Was this issued as a comp, reward, or giveaway?
+is_print_only | Does the merchat allow certificates for this product to be redeemed via mobile phones? If not, this value will be false.
 can_split_value | Certificate face value can be split
 gift_card_image | Image of the gift card
 photos[] | Events and Deals can include a photo gallery
@@ -1384,16 +1444,6 @@ curl -X POST https://api.instagift.com/v2/support_tickets \
     -d '{"name":"John Doe,"email":"person@example.com","message":"I can't access my account"}'
 ```
 
-> Sample response
-
-```json
-{
-    "data": {
-        "title": "..."
-    }
-}
-```
-
 `POST /v2/support_tickets` <code class="prettyprint public">PUBLIC</code>
 
 ### Request
@@ -1597,3 +1647,52 @@ curl -i -X DELETE https://api.instagift.com/v2/tokens \
 
 `204 No Content`
 
+<!--
+################################################################################
+-->
+
+# Ecommerce Integration
+
+## Overview
+
+This section is intended to serve as a guide for Instagift merchant customers who wish to integrate Instagift into the ecommerce portion of their website using the Instagift API. It is for webmasters that have built, or have a high degree of control over, their ecommerce environment. If you are running ecommerce through a service like Shopify, Squarespace, or Miva Merchant, this guide is probably not for you.
+
+### Merchant authentication and API Keys
+
+You can create an API key in your Instagift Merchant Dashboard under Settings → API Keys. A GROW plan is required. See [Authentication](#authentication) for more information about making authenticated merchant API requests.
+
+### Note about "certificates"
+
+This guide refers to all Instagift issued virtual gift cards, event tickets, gift certificates, coupons and other various types of printed vouchers as "certificates".
+
+### Integration Steps
+
+When integrating Instagift gift and reward card redemption into your checkout flow, these are the basic steps required:
+
+1. During checkout, your customers will need the ability to apply an "Instagift Claim Code" towards the balance of their order. This input box should be appropriately labeled "Instagift Claim Code". Claim codes are displayed on each Instagift certificate. Claim codes include both letters and numbers and are typically 13 to 15 characters long. Example claim codes: "MNK-QPF27E-EHJ3", "U4KR-9CLT-3KNPU4"
+2. Using the Instagift API, your ecommerce system should [fetch the certificate by claim code](#fetch-a-certificate-by-claim-code) to check validity and balance. Merchant authentication required.
+3. If the claim code is valid, your ecommerce system should apply all or part (if allowed) of the certificate's face value to the customer's current order.
+4. After successful checkout, your system should [redeem the certificate by claim code](#redeem-a-certificate-by-claim-code), specifying the amount (amount_to_redeem_cents) to deduct from the Instagift certificate balance. Merchant authentication required.
+
+## Partial Redemption
+
+API parameters and values are **bold**.
+
+### can_split_value
+
+If a certificate **can_split_value** is **true**, you can submit a **amount_to_redeem_cents** for less than the certificate's **face_value_cents**. A successful partial redemption will result in:
+
+1. The **face_value_cents** of the certificate will be lowered to the redemption amount
+2. The certificate **status** will be updated to **redeemed**
+3. A new certificate will be placed in the users account for the balance. They can use this new certificate (with a new claim code) at a later date.
+
+If a certificate **can_split_value** is **false**, the entire certificate face value will be redeemed. This should be made apparent to the user in order to avoid confusion.
+
+### Dollars vs Cents
+
+Currently, the Instagift API does not allow for redemption amounts that are not whole numbers. If you submit a redemption **amount_to_redeem_cents** of 2381 ($23.81), you’ll receive a redemption response for 2300 ($23.00), which is the **amount_to_redeem_cents** rounded down to the nearest integer. If a fetch reveals that a user has a certificate for $100, and they owe $52.50 for your order, you can either:
+
+* Submit a redemption for 5200 ($52), meaning the user will have to pay the remaining 50 cents with an alternate form of payment, or
+* Submit a redemption for 5300 ($53), meaning the user will receive another certificate from Instagift for $47, losing 50 cents.
+
+We may revisit this in the future.
