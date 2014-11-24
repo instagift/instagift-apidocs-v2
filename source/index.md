@@ -1203,7 +1203,7 @@ href | Resource URL for this product, will respond to GET requests
 type | GiftCertificate, Event, or Deal
 discount_sale_name | Some type=Deal belong to this special kind of sale
 is_giveaway | Was this issued as a comp, reward, or giveaway?
-is_print_only | Does the merchat allow certificates for this product to be redeemed via mobile phones? If not, this value will be false.
+is_print_only | Does the merchant allow certificates for this product to be redeemed via mobile? If false, mobile redemption should be disabled.
 can_split_value | Certificate face value can be split
 gift_card_image | Image of the gift card
 photos[] | Events and Deals can include a photo gallery
