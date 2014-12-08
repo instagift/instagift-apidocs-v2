@@ -112,7 +112,7 @@ GET /v2/certificates | [List all Certificates](#list-all-certificates)
 POST /v2/certificates/:certificate_id/certificates | [Split a Certificate](#split-a-certificate)
 POST /v2/certficates/:certificate_id/redemptions | [Redeem a Certificate](#redeem-a-certificate)
 POST /v2/certificates/:certificate_id/gifts | [Gift a Certificate](#gift-a-certificate)
-PUT /v2/certificates/:certificate_id/gifts | [Claim a Certificate by Claim Code](#claim-a-certificate-by-claim-code)
+PUT /v2/certificates/:certificate_id | [Claim a Certificate by Claim Code](#claim-a-certificate-by-claim-code)
 GET /v2/gifts/:gift_id | [Fetch a Gift](#fetch-a-gift)
 GET /v2/gifts | [List all Gifts](#list-all-gifts)
 GET /v2/redemptions/:redemption_id | [Fetch a Redemption](#fetch-a-redemption)
@@ -558,7 +558,6 @@ gift.send_date | false | Date when the gift should be sent. All future gifts sen
 
 See [Fetch a Gift](#fetch-a-gift)
 
-
 <!--
 ################################################################################
 -->
@@ -720,7 +719,7 @@ See [Fetch a Redemption](#fetch-a-redemption)
 > Sample request(s)
 
 ```cURL
-curl -X PUT https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y
+curl -X PUT https://api.instagift.com/v2/certificates/E69W-CDQ2-WTWH6Y
 ```
 
 > Sample response
@@ -745,7 +744,7 @@ curl -X PUT https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y
 }
 ```
 
-`PUT /v2/claim_codes/:claim_code/certificates` <code class="prettyprint user">USER</code>
+`PUT /v2/certificates/:claim_code` <code class="prettyprint user">USER</code>
 
 ### Request
 
