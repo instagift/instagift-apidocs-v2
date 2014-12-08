@@ -88,14 +88,14 @@ The following API endpoints are accessible without user or merchant authenticati
 
 Endpoint | Description
 --------- | -----------
-GET /v2/locations/:location_id | [Fetch a Location](#fetch-a-location)
-GET /v2/merchants/:merchant_id/locations | [List all Locations for a Merchant](#list-all-locations-for-a-merchant)
-GET /v2/products/:product_id/locations | [List all Redemption Locations for a Product](#list-redemption-locations-for-a-product)
-GET /v2/merchants/:merchant_id | [Fetch a Merchant](#fetch-a-merchant)
+GET /v2/locations/{locations.id} | [Fetch a Location](#fetch-a-location)
+GET /v2/merchants/{merchants.id}/locations | [List all Locations for a Merchant](#list-all-locations-for-a-merchant)
+GET /v2/products/{products.id}/locations | [List all Redemption Locations for a Product](#list-redemption-locations-for-a-product)
+GET /v2/merchants/{merchants.id} | [Fetch a Merchant](#fetch-a-merchant)
 POST /v2/passwords | [Reset User Password](#reset-password)
-GET /v2/products/:product_id | [Fetch a Product](#fetch-a-product)
-GET /v2/product_options/:product_option_id | [Fetch a Product Option](#fetch-a-product-option)
-GET /v2/products/:product_id/product_options | [List all Product Options for a Product](#list-product-options-for-a-product)
+GET /v2/products/{products.id} | [Fetch a Product](#fetch-a-product)
+GET /v2/product_options/{product_options.id} | [Fetch a Product Option](#fetch-a-product-option)
+GET /v2/products/{products.id}/product_options | [List all Product Options for a Product](#list-product-options-for-a-product)
 POST /v2/support_tickets | [Create a Support Ticket](#create-a-support-ticket)
 POST /v2/users | [Create a User](#create-a-user)
 POST /v2/tokens | [Request User Token](#request-user-token)
@@ -107,17 +107,17 @@ The following API endpoints are accessible with valid user authentication, see
 
 Endpoint | Description
 --------- | -----------
-GET /v2/certificates/:certificate_id | [Fetch a Certificate](#fetch-a-certificate)
+GET /v2/certificates/{certificates.id} | [Fetch a Certificate](#fetch-a-certificate)
 GET /v2/certificates | [List all Certificates](#list-all-certificates)
-POST /v2/certificates/:certificate_id/certificates | [Split a Certificate](#split-a-certificate)
-POST /v2/certficates/:certificate_id/redemptions | [Redeem a Certificate](#redeem-a-certificate)
-POST /v2/certificates/:certificate_id/gifts | [Gift a Certificate](#gift-a-certificate)
-PUT /v2/certificates/:certificate_id | [Claim a Certificate by Claim Code](#claim-a-certificate-by-claim-code)
-GET /v2/gifts/:gift_id | [Fetch a Gift](#fetch-a-gift)
+POST /v2/certificates/{certificates.id}/certificates | [Split a Certificate](#split-a-certificate)
+POST /v2/certficates/{certificates.id}/redemptions | [Redeem a Certificate](#redeem-a-certificate)
+POST /v2/certificates/{certificates.id}/gifts | [Gift a Certificate](#gift-a-certificate)
+PUT /v2/certificates/{certificates.claim_code} | [Claim a Certificate by Claim Code](#claim-a-certificate-by-claim-code)
+GET /v2/gifts/{gifts.id} | [Fetch a Gift](#fetch-a-gift)
 GET /v2/gifts | [List all Gifts](#list-all-gifts)
-GET /v2/redemptions/:redemption_id | [Fetch a Redemption](#fetch-a-redemption)
+GET /v2/redemptions/{redemptions.id} | [Fetch a Redemption](#fetch-a-redemption)
 GET /v2/redemptions | [List all Redemptions](#list-all-redemptions)
-GET /v2/users/:user_id | [Fetch a User](#fetch-a-user)
+GET /v2/users/{users.id}| [Fetch a User](#fetch-a-user)
 DELETE /v2/tokens | [Reset Token](#reset-user-token)
 
 ## Merchant Endpoints
