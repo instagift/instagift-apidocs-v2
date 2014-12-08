@@ -141,19 +141,19 @@ it updated.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td>GET /v2/locations/:location_id</td>
+<td>GET /v2/locations/{locations.id}</td>
 <td><a href="#fetch-a-location">Fetch a Location</a></td>
 </tr>
 <tr>
-<td>GET /v2/merchants/:merchant_id/locations</td>
+<td>GET /v2/merchants/{merchants.id}/locations</td>
 <td><a href="#list-all-locations-for-a-merchant">List all Locations for a Merchant</a></td>
 </tr>
 <tr>
-<td>GET /v2/products/:product_id/locations</td>
+<td>GET /v2/products/{products.id}/locations</td>
 <td><a href="#list-redemption-locations-for-a-product">List all Redemption Locations for a Product</a></td>
 </tr>
 <tr>
-<td>GET /v2/merchants/:merchant_id</td>
+<td>GET /v2/merchants/{merchants.id}</td>
 <td><a href="#fetch-a-merchant">Fetch a Merchant</a></td>
 </tr>
 <tr>
@@ -161,15 +161,15 @@ it updated.</p>
 <td><a href="#reset-password">Reset User Password</a></td>
 </tr>
 <tr>
-<td>GET /v2/products/:product_id</td>
+<td>GET /v2/products/{products.id}</td>
 <td><a href="#fetch-a-product">Fetch a Product</a></td>
 </tr>
 <tr>
-<td>GET /v2/product_options/:product_option_id</td>
+<td>GET /v2/product_options/{product_options.id}</td>
 <td><a href="#fetch-a-product-option">Fetch a Product Option</a></td>
 </tr>
 <tr>
-<td>GET /v2/products/:product_id/product_options</td>
+<td>GET /v2/products/{products.id}/product_options</td>
 <td><a href="#list-product-options-for-a-product">List all Product Options for a Product</a></td>
 </tr>
 <tr>
@@ -196,7 +196,7 @@ it updated.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td>GET /v2/certificates/:certificate_id</td>
+<td>GET /v2/certificates/{certificates.id}</td>
 <td><a href="#fetch-a-certificate">Fetch a Certificate</a></td>
 </tr>
 <tr>
@@ -204,23 +204,23 @@ it updated.</p>
 <td><a href="#list-all-certificates">List all Certificates</a></td>
 </tr>
 <tr>
-<td>POST /v2/certificates/:certificate_id/certificates</td>
+<td>POST /v2/certificates/{certificates.id}/certificates</td>
 <td><a href="#split-a-certificate">Split a Certificate</a></td>
 </tr>
 <tr>
-<td>POST /v2/certficates/:certificate_id/redemptions</td>
+<td>POST /v2/certficates/{certificates.id}/redemptions</td>
 <td><a href="#redeem-a-certificate">Redeem a Certificate</a></td>
 </tr>
 <tr>
-<td>POST /v2/certificates/:certificate_id/gifts</td>
+<td>POST /v2/certificates/{certificates.id}/gifts</td>
 <td><a href="#gift-a-certificate">Gift a Certificate</a></td>
 </tr>
 <tr>
-<td>PUT /v2/certificates/:certificate_id</td>
+<td>PUT /v2/certificates/{certificates.claim_code}</td>
 <td><a href="#claim-a-certificate-by-claim-code">Claim a Certificate by Claim Code</a></td>
 </tr>
 <tr>
-<td>GET /v2/gifts/:gift_id</td>
+<td>GET /v2/gifts/{gifts.id}</td>
 <td><a href="#fetch-a-gift">Fetch a Gift</a></td>
 </tr>
 <tr>
@@ -228,7 +228,7 @@ it updated.</p>
 <td><a href="#list-all-gifts">List all Gifts</a></td>
 </tr>
 <tr>
-<td>GET /v2/redemptions/:redemption_id</td>
+<td>GET /v2/redemptions/{redemptions.id}</td>
 <td><a href="#fetch-a-redemption">Fetch a Redemption</a></td>
 </tr>
 <tr>
@@ -236,7 +236,7 @@ it updated.</p>
 <td><a href="#list-all-redemptions">List all Redemptions</a></td>
 </tr>
 <tr>
-<td>GET /v2/users/:user_id</td>
+<td>GET /v2/users/{users.id}</td>
 <td><a href="#fetch-a-user">Fetch a User</a></td>
 </tr>
 <tr>
