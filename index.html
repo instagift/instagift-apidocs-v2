@@ -4,7 +4,12 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Instagift API Reference</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon"/>
+    <!-- /favicon -->
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -13,7 +18,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","ruby","python"]);
+          setupLanguages(["cURL"]);
         });
       </script>
   </head>
@@ -28,9 +33,7 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="cURL">cURL</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -38,143 +41,416 @@
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
-        <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
-        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="http://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
+        <h1 id='api-overview'>API Overview</h1>
+<p>This API provides Instagift merchants and consumers the ability to read and interact
+with select Instagift data. It is exposed as an HTTP API, so that it can be used from any language.
+It accepts and returns JSON only, and closely follows the format of
+<a href="http://jsonapi.org/" target="_blank">JSON API</a>.</p>
+<h2 id='authentication'>Authentication</h2>
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>Sample request including user authentication headers</p>
 </blockquote>
-<pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</pre>
-<pre class="highlight python"><span class="kn">import</span> <span class="s">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">Kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</pre>
-<pre class="highlight shell"><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/sample/endpoint \
+  -H "X-User-Email: person@example.com" \
+  -H "X-User-Token: quhZKsGMSJc5eUAYm-FA" \
 </pre>
 
 <blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
+<p>Sample request including merchant authentication headers</p>
 </blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<p><aside class="notice">
-You must replace <code class="prettyprint">meowmeowmeow</code> with your personal API key.
-</aside></p>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h1><pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</pre>
-<pre class="highlight python"><span class="kn">import</span> <span class="s">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">Kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</pre>
-<pre class="highlight shell">curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/sample/endpoint \
+  -H "X-Merchant-Key: OWqqv2rwnWucQC22CVwvMg" \
+  -H "X-Merhcant-Secret: 1WngOCryMpl1l7fXH7DIYA"
 </pre>
 
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></pre>
+<p>Both User and Merchant accounts of Instagift can authenticate by setting a combination of two HTTP request headers
+(&lsquo;X-User-Email&rsquo; and &lsquo;X-User-Token&rsquo; for users and &lsquo;X-Merchant-Key&rsquo; and &lsquo;X-Merchant-Secret&rsquo; for merchants).
+Throughout this doc,
+endpoints and query filters will be marked as
+<code class="prettyprint user">USER</code>,
+<code class="prettyprint merchant">MERCHANT</code>, or
+<code class="prettyprint public">PUBLIC</code>
+depending on the type of authorization required.</p>
 
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h1>
-<p><code class="prettyprint">GET http://example.com/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h1>
+<p>Note: Throughout this doc, cURL examples will not include sample authentication headers.</p>
+<h3 id='user-authentication-http-headers'>User Authentication HTTP Headers</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>X-User-Email</td>
+<td>true</td>
+<td>A valid email for an Instagift user account</td>
 </tr>
 <tr>
-<td>available</td>
+<td>X-User-Token</td>
 <td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>See <a href="#request-user-token">Request User Token</a></td>
+</tr>
+</tbody></table>
+<h3 id='merchant-authentication-http-headers'>Merchant Authentication HTTP Headers</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>X-Merchant-Key</td>
+<td>true</td>
+<td>Generated from the Merchant Dashboard</td>
+</tr>
+<tr>
+<td>X-Merchant-Secret</td>
+<td>true</td>
+<td>Generated from the Merchant Dashboard</td>
+</tr>
+</tbody></table>
+<h2 id='support'>Support</h2>
+<p>Please email <a href="mailto:support@instagift.com">support@instagift.com</a> with all questions and issues.</p>
+
+<p>Additionally, the source for this guide is publicy available on GitHub. Feel free to
+submit pull requests if you find any typos or missing data, we&rsquo;ll do our best to keep
+it updated.</p>
+
+<ul>
+<li><a href="https://github.com/mikesch/instagift-apidocs-v2">https://github.com/mikesch/instagift-apidocs-v2</a></li>
+</ul>
+<h2 id='rate-limiting'>Rate Limiting</h2>
+<p>Coming soon</p>
+
+<!--
+################################################################################
+-->
+<h1 id='table-of-contents'>Table of Contents</h1><h2 id='public-endpoints'>Public Endpoints</h2>
+<p>The following API endpoints are accessible without user or merchant authentication.</p>
+
+<table><thead>
+<tr>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>GET /v2/locations/:location_id</td>
+<td><a href="#fetch-a-location">Fetch a Location</a></td>
+</tr>
+<tr>
+<td>GET /v2/merchants/:merchant_id/locations</td>
+<td><a href="#list-all-locations-for-a-merchant">List all Locations for a Merchant</a></td>
+</tr>
+<tr>
+<td>GET /v2/products/:product_id/locations</td>
+<td><a href="#list-redemption-locations-for-a-product">List all Redemption Locations for a Product</a></td>
+</tr>
+<tr>
+<td>GET /v2/merchants/:merchant_id</td>
+<td><a href="#fetch-a-merchant">Fetch a Merchant</a></td>
+</tr>
+<tr>
+<td>POST /v2/passwords</td>
+<td><a href="#reset-password">Reset User Password</a></td>
+</tr>
+<tr>
+<td>GET /v2/products/:product_id</td>
+<td><a href="#fetch-a-product">Fetch a Product</a></td>
+</tr>
+<tr>
+<td>GET /v2/product_options/:product_option_id</td>
+<td><a href="#fetch-a-product-option">Fetch a Product Option</a></td>
+</tr>
+<tr>
+<td>GET /v2/products/:product_id/product_options</td>
+<td><a href="#list-product-options-for-a-product">List all Product Options for a Product</a></td>
+</tr>
+<tr>
+<td>POST /v2/support_tickets</td>
+<td><a href="#create-a-support-ticket">Create a Support Ticket</a></td>
+</tr>
+<tr>
+<td>POST /v2/users</td>
+<td><a href="#create-a-user">Create a User</a></td>
+</tr>
+<tr>
+<td>POST /v2/tokens</td>
+<td><a href="#request-user-token">Request User Token</a></td>
+</tr>
+</tbody></table>
+<h2 id='user-endpoints'>User Endpoints</h2>
+<p>The following API endpoints are accessible with valid user authentication, see
+<a href="#request-user-token">Request User Token</a>.</p>
+
+<table><thead>
+<tr>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>GET /v2/certificates/:certificate_id</td>
+<td><a href="#fetch-a-certificate">Fetch a Certificate</a></td>
+</tr>
+<tr>
+<td>GET /v2/certificates</td>
+<td><a href="#list-all-certificates">List all Certificates</a></td>
+</tr>
+<tr>
+<td>POST /v2/certificates/:certificate_id/certificates</td>
+<td><a href="#split-a-certificate">Split a Certificate</a></td>
+</tr>
+<tr>
+<td>POST /v2/certficates/:certificate_id/redemptions</td>
+<td><a href="#redeem-a-certificate">Redeem a Certificate</a></td>
+</tr>
+<tr>
+<td>POST /v2/certificates/:certificate_id/gifts</td>
+<td><a href="#gift-a-certificate">Gift a Certificate</a></td>
+</tr>
+<tr>
+<td>PUT /v2/certificates/:certificate_id</td>
+<td><a href="#claim-a-certificate-by-claim-code">Claim a Certificate by Claim Code</a></td>
+</tr>
+<tr>
+<td>GET /v2/gifts/:gift_id</td>
+<td><a href="#fetch-a-gift">Fetch a Gift</a></td>
+</tr>
+<tr>
+<td>GET /v2/gifts</td>
+<td><a href="#list-all-gifts">List all Gifts</a></td>
+</tr>
+<tr>
+<td>GET /v2/redemptions/:redemption_id</td>
+<td><a href="#fetch-a-redemption">Fetch a Redemption</a></td>
+</tr>
+<tr>
+<td>GET /v2/redemptions</td>
+<td><a href="#list-all-redemptions">List all Redemptions</a></td>
+</tr>
+<tr>
+<td>GET /v2/users/:user_id</td>
+<td><a href="#fetch-a-user">Fetch a User</a></td>
+</tr>
+<tr>
+<td>DELETE /v2/tokens</td>
+<td><a href="#reset-user-token">Reset Token</a></td>
+</tr>
+</tbody></table>
+<h2 id='merchant-endpoints'>Merchant Endpoints</h2>
+<p>The following API endpoints are accessible with valid merchant authentication.
+Merchant&rsquo;s can generate API keys from their Instagift Merchant Dashboard.
+<a href="https://instagift.com/#pricing" target="_blank">GROW plan required</a></p>
+
+<table><thead>
+<tr>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>GET /v2/certificates/{certificates.id}</td>
+<td><a href="#fetch-a-certificate">Fetch a Certificate</a></td>
+</tr>
+<tr>
+<td>GET /v2/certificates</td>
+<td><a href="#list-all-certificates">List all Certificates</a></td>
+</tr>
+<tr>
+<td>POST /v2/certificates/{certificates.id}/redemptions</td>
+<td><a href="#redeem-a-certificate">Redeem a Certificate</a></td>
+</tr>
+<tr>
+<td>GET /v2/claim_codes/{certificates.claim_code}</td>
+<td><a href="#fetch-a-certificate-by-claim-code">Fetch a Certificate by Claim Code</a></td>
+</tr>
+<tr>
+<td>POST /v2/claim_codes/{certificates.claim_code}/redemptions</td>
+<td><a href="#redeem-a-certificate-by-claim-code">Redeem a Certificate by Claim Code</a></td>
+</tr>
+<tr>
+<td>GET /v2/redemptions/{redemptions.id}</td>
+<td><a href="#fetch-a-redemption">Fetch a Redemption</a></td>
+</tr>
+<tr>
+<td>GET /v2/redemptions</td>
+<td><a href="#list-all-redemptions">List all Redemptions</a></td>
+</tr>
+<tr>
+<td>GET /v2/users</td>
+<td><a href="#fetch-a-user">Fetch a User</a></td>
+</tr>
+</tbody></table>
+<h2 id='ecommerce'>Ecommerce</h2>
+<p>The following merchant authenticated endpoints should be used when integrating an ecommerce site with Instagift gift card redemptions.</p>
+
+<table><thead>
+<tr>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>GET /v2/claim_codes/{certificates.claim_code}</td>
+<td><a href="#fetch-a-certificate-by-claim-code">Fetch a Certificate by Claim Code</a></td>
+</tr>
+<tr>
+<td>POST /v2/claim_codes/{certificates.claim_code}/redemptions</td>
+<td><a href="#redeem-a-certificate-by-claim-code">Redeem a Certificate by Claim Code</a></td>
 </tr>
 </tbody></table>
 
-<p><aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside></p>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h1><pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>Please see the <a href="#ecommerce-integration">Ecommerce Integration</a> section for more detailed instructions.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre>
-<pre class="highlight python"><span class="kn">import</span> <span class="s">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">Kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre>
-<pre class="highlight shell">curl <span class="s2">"http://example.com/api/kittens/3"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<!--
+################################################################################
+-->
+<h1 id='certificates'>Certificates</h1><h2 id='fetch-a-certificate'>Fetch a Certificate</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/certificates/AzoXEYPYxG3OUaKJi234WQ
 </pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>Sample response</p>
 </blockquote>
 <pre class="highlight json"><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"certificates.user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{certificates.user}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/{certificates.parent}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{certificates.merchant}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{certificates.product}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"certificates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hD65TJvxnv8oIuyOmD056w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/hD65TJvxnv8oIuyOmD056w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GiftCertificate"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"claim_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"62DD-CV4T-R2NTM2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"merchant_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R2NTM2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assigned"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"marked_as_printed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"can_split_value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"qrcode_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/system/qrcodes/hD65TJvxnv8oIuyOmD056w.png"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"price_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"seller"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$100 Tuscan Kitchen eGift Card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"thumb"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"_P07R17NtAZhxN56rneT7A"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/_P07R17NtAZhxN56rneT7A"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://tuscankitchen.instagift.com/"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"time_zone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Eastern Time (US &amp; Canada)"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"logo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/logos/original/missing.png"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"108esJv3En11Ugc6VZLyCA"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/108esJv3En11Ugc6VZLyCA"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen, 100 Main St., Ste 2, Pleasantville, KS"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100 Main St."</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ste 2"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pleasantville"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"KS"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67502"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3166620036"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lng"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"daily_deal_store"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NnjAQSTtcMcHYZXhRehPVQ"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://tuscankitchen.instagift.com/gift-card"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GiftCertificate"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"discount_sale_name"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"is_giveaway"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"can_split_value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"gift_card_image"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"photos"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+                </span><span class="s2">"headline"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"tagline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen eGift Card"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"terms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="s2">"Good on any food or drink"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Can be used on tax and gratuity"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Does not expire"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"Merchant are not required to give change for the unused balance"</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="s2">"expiration_instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unless otherwise noted, this gift card NEVER EXPIRES"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"redemption_instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This gift card can be redeemed at the locations listed at http://tuscankitchen.instagift.com/gift-card"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"merchant_instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This gift card originated from the Instagift.com online store for Tuscan Kitchen located at http://tuscankitchen.instagift.com/ Your staff should be trained to accept and validate gifts cards as they arrive. If you have questions, please ask your manager or e-mail support@instagift.com"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"product_options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mJ1Ie-LkebfAtiCeaCIgFg"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/product_options/mJ1Ie-LkebfAtiCeaCIgFg"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"price_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"tagline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$100 Gift Card"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"limit_per_order"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"is_recommended"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="s2">"redemption_locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"108esJv3En11Ugc6VZLyCA"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/108esJv3En11Ugc6VZLyCA"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen, 100 Main St., Ste 2, Pleasantville, KS"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100 Main St."</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ste 2"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pleasantville"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"KS"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67502"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3166620036"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lng"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"product_option"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mJ1Ie-LkebfAtiCeaCIgFg"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/product_options/mJ1Ie-LkebfAtiCeaCIgFg"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"price_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"tagline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$100 Gift Card"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"limit_per_order"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"is_recommended"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7_JyTOaJuGD5ahUdWGvcnw"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"parent"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"_P07R17NtAZhxN56rneT7A"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NnjAQSTtcMcHYZXhRehPVQ"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T16:29:44Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T16:29:44Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<p><code class="prettyprint">GET /v2/certificates/:certificate_id</code> <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='response'>Response</h3>
+<p>Certificate relationships are expanded when fetching an individual certificate (vs list)
+in order to efficiently provide all the data necessary to display a certificate for redemption.</p>
 
-<p><aside class="warning">If you&rsquo;re not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside></p>
-<h3 id='http-request'>HTTP Request</h1>
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h1>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -182,15 +458,1768 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the cat to retrieve</td>
+<td>href</td>
+<td>Resource URL for this certificate, will respond to GET requests</td>
+</tr>
+<tr>
+<td>product_type</td>
+<td>GiftCertificate, Deal, or Event</td>
+</tr>
+<tr>
+<td>claim_code</td>
+<td>Can be used to transfer certificate between user accounts</td>
+</tr>
+<tr>
+<td>merchant_code</td>
+<td>Used by the merchant to redeem certificates</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Possible statuses: assigned, cancelled, gifted, pending, redeemed, cancelled, returned</td>
+</tr>
+<tr>
+<td>marked_as_printed</td>
+<td>Certificate owner (user) has specified that he/she has printed the certificate</td>
+</tr>
+<tr>
+<td>can_split_value</td>
+<td>true/false. Certificate face value can be split into smaller denominations</td>
+</tr>
+<tr>
+<td>qrcode_image</td>
+<td>URL to QR Code image</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>Currently only USD</td>
+</tr>
+<tr>
+<td>face_value_cents</td>
+<td>Amount the certificate can be redeemed for</td>
+</tr>
+<tr>
+<td>price_cents</td>
+<td>Amount paid for the certificate</td>
+</tr>
+<tr>
+<td>seller</td>
+<td>Name of the seller, convenient for display</td>
+</tr>
+<tr>
+<td>title</td>
+<td>Title of the product, convenient for display</td>
+</tr>
+<tr>
+<td>thumb</td>
+<td>Small image of the product / merchant, convenient for display</td>
+</tr>
+<tr>
+<td>expires_at</td>
+<td>Datetime the certificate can no longer be redeemed for full face value.</td>
+</tr>
+<tr>
+<td>daily_deal_store</td>
+<td>Third party store information if the seller of this certificate was a daily deal store.</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-user">user</a></td>
+<td>User details for the certificate owner</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-certificate">parent</a></td>
+<td>Present if this certificate was created due to a partial redemption or split</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-merchant">merchant</a></td>
+<td>Merchant details for this certificate</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-product">product</a></td>
+<td>Product details for this certificate</td>
+</tr>
+</tbody></table>
+<h2 id='list-all-certificates'>List all Certificates</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/certificates
+curl https://api.instagift.com/v2/certificates?status=available&amp;product_type=Event&amp;list_type=available&amp;page=2
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"certificates.user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{certificates.user}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/{certificates.parent}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{certificates.merchant}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{certificates.product}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?per_page=10&amp;page=1"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"per_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"page_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"first"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?per_page=10&amp;page=1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"previous"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"next"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?per_page=10&amp;page=1"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"certificates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sD-2VrA6hxAj8FVnoSc_gw"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/sD-2VrA6hxAj8FVnoSc_gw"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GiftCertificate"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"claim_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"E69W-CDQ2-WTWH6Y"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"merchant_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WTWH6Y"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assigned"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"marked_as_printed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"can_split_value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"qrcode_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/system/qrcodes/sD-2VrA6hxAj8FVnoSc_gw.png"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"price_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"seller"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$100 Tuscan Kitchen eGift Card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"thumb"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"srX0Fin8wFfJ1TEcffTj0w"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NNA6XfwMj9XUCf58V1_u-Q"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tQpEkvBp2E0oH1zRiP6RLQ"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"product_option"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RjOWgOhoYf-SETVcyMjJEw"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-08T18:15:21Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-08T18:15:21Z"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/certificates</code> <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>list_type</td>
+<td>false</td>
+<td>Possible statuses: &lsquo;all&rsquo; and &lsquo;available&rsquo;. Defaults to all. <code class="prettyprint user">USER</code></td>
+</tr>
+<tr>
+<td>product_type</td>
+<td>false</td>
+<td>Possible product_types: &lsquo;Deal&rsquo;, &lsquo;Event&rsquo;, &lsquo;GiftCertificate&rsquo;. Defaults to all types. <code class="prettyprint user">USER</code></td>
+</tr>
+<tr>
+<td>page</td>
+<td>false</td>
+<td>1 to n. Defaults to 1.</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p>Relationships are not expanded in list view. See <a href="#fetch-a-certificate">Fetch a Certificate</a> for expanded response.</p>
+<h2 id='split-a-certificate'>Split a Certificate</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/certificates \
+-H "Content-Type: application/json" \
+-d '{"new_face_value_cents":"4000"}' \
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"certificates.parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/{certificates.parent}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"certificates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TZkfX5yZgWGPVyVHi8FVqg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/TZkfX5yZgWGPVyVHi8FVqg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">6000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"parent"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NArlAnTTTnXrL1n_DWJA9w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/NArlAnTTTnXrL1n_DWJA9w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TZkfX5yZgWGPVyVHi8FVqg"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">POST /v2/certificates/:certificate_id/certificates</code> <code class="prettyprint user">USER</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>face_value_cents</td>
+<td>false</td>
+<td>Possible product_types: &lsquo;Deal&rsquo;, &lsquo;Event&rsquo;, &lsquo;GiftCertificate&rsquo;. Defaults to all types. <code class="prettyprint user">USER</code></td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p>In a successful split, two unexpanded <a href="#list-all-certificates">certificates</a> are returned.
+The child certificate will have a parent relationship pointing to the original certificate.</p>
+<h2 id='redeem-a-certificate'>Redeem a Certificate</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/redemptions \
+-H "Content-Type: application/json" \
+-d '{"amount_to_redeem_cents":"4000"}' \
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"redemptions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">POST /v2/certificates/:certificate_id/redemptions</code> <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>amount_to_redeem_cents</td>
+<td>false</td>
+<td>Amount to redeem. If none is passed, the entire certificate face value is redeemed.</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">201 Created</code> See <a href="#fetch-a-redemption">Fetch a Redemption</a></p>
+<h3 id='relationships'>Relationships</h3>
+<p>See <a href="#fetch-a-redemption">Fetch a Redemption</a></p>
+<h2 id='gift-a-certificate'>Gift a Certificate</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/certificates/fBkhLlMVLUYpFOjkAvMTbQ/gifts \
+    -H "Content-Type: application/json" \
+    -d '{"gift":{"sender_name": "Sender Schmidt", "sender_reply_to": "sender@example.com", "recipient_name": "Receiver Rogers", "recipient_email": "receiver@example.com", "message": "Enjoy this gift!"}}' \
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"gifts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kk8dw5jSaf2oyzLMet9CLA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/gifts/Kk8dw5jSaf2oyzLMet9CLA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">POST /v2/certificates/:certificate_id/gifts</code> <code class="prettyprint user">USER</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>gift</td>
+<td>true</td>
+<td>A JSON object containing the gift information. {&ldquo;gift&rdquo;:{&ldquo;sender_name&rdquo;: &ldquo;John Doe&rdquo;, &ldquo;recipient_email&rdquo;: &ldquo;receiver@example.com&rdquo;}</td>
+</tr>
+<tr>
+<td>gift.sender_name</td>
+<td>true</td>
+<td>Name of the certificate owner who is sending the gift</td>
+</tr>
+<tr>
+<td>gift.sender_reply_to</td>
+<td>false</td>
+<td>Reply email address of the certificate owner who is sending the gift</td>
+</tr>
+<tr>
+<td>gift.recipient_name</td>
+<td>false</td>
+<td>Gift recipient&rsquo;s name</td>
+</tr>
+<tr>
+<td>gift.recipient_email</td>
+<td>true</td>
+<td>Email address where to send the gift</td>
+</tr>
+<tr>
+<td>gift.message</td>
+<td>false</td>
+<td>Personal message to include in the gift email</td>
+</tr>
+<tr>
+<td>gift.send_date</td>
+<td>false</td>
+<td>Date when the gift should be sent. All future gifts send at or around 3AM ET on date specified. Defaults to immediate send.</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">201 Created</code> See <a href="#fetch-a-gift">Fetch a Gift</a></p>
+<h3 id='relationships'>Relationships</h3>
+<p>See <a href="#fetch-a-gift">Fetch a Gift</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='claim-codes'>Claim Codes</h1><h2 id='fetch-a-certificate-by-claim-code'>Fetch a Certificate by Claim Code</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"certificates.user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{certificates.user}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.parent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/{certificates.parent}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{certificates.merchant}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"certificates.product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{certificates.product}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"certificates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sD-2VrA6hxAj8FVnoSc_gw"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/sD-2VrA6hxAj8FVnoSc_gw"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GiftCertificate"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"claim_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"E69W-CDQ2-WTWH6Y"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"merchant_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WTWH6Y"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assigned"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"marked_as_printed"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"can_split_value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"qrcode_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/system/qrcodes/sD-2VrA6hxAj8FVnoSc_gw.png"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"price_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"seller"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$100 Tuscan Kitchen eGift Card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"thumb"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"srX0Fin8wFfJ1TEcffTj0w"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NNA6XfwMj9XUCf58V1_u-Q"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tQpEkvBp2E0oH1zRiP6RLQ"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"product_option"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RjOWgOhoYf-SETVcyMjJEw"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"expires_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-08T18:15:21Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-08T18:15:21Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/claim_code/:claim_code</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='response'>Response</h3>
+<p>Certificate relationships are not expanded in claim code view. See <a href="#fetch-a-certificate">Fetch a Certificate</a> for expanded response.</p>
+<h3 id='relationships'>Relationships</h3>
+<p>See <a href="#fetch-a-certificate">Fetch a Certificate</a></p>
+<h2 id='redeem-a-certificate-by-claim-code'>Redeem a Certificate by Claim Code</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/claim_codes/E69W-CDQ2-WTWH6Y/redemptions \
+-H "Content-Type: application/json" \
+-d '{"amount_to_redeem_cents":"4000"}' \
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"redemptions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<blockquote>
+<p>Sample errors</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"400"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bad Request"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This item has previously been redeemed"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unable to create redemption"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"401"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unauthorized"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Permission denied"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"404"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Not Found"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Resource with that ID not found"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">POST /v2/claim_codes/:claim_code/redemptions</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>amount_to_redeem_cents</td>
+<td>false</td>
+<td>Amount to redeem. If none is passed, the entire certificate face value is redeemed.</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">201 Created</code> See <a href="#fetch-a-redemption">Fetch a Redemption</a></p>
+<h3 id='errors'>Errors</h3>
+<p>Error response JSON includes &ldquo;code&rdquo;, &ldquo;status&rdquo;, &ldquo;title&rdquo;, and &ldquo;details&rdquo;. The HTTP status code should match the response &ldquo;code&rdquo;.</p>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Status</th>
+<th>Title</th>
+<th>Details</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Unable to create redemption</td>
+<td>That item is not available for redemption</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Unable to create redemption</td>
+<td>This item has previously been redeemed</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Unable to create redemption</td>
+<td>This item has been refunded to the customer</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Unable to create redemption</td>
+<td>You must select a redemption location</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Permission denied</td>
+<td></td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>Resource with that ID not found</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<p>See <a href="#fetch-a-redemption">Fetch a Redemption</a></p>
+<h2 id='claim-a-certificate-by-claim-code'>Claim a Certificate by Claim Code</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X PUT https://api.instagift.com/v2/certificates/E69W-CDQ2-WTWH6Y
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"certificates.user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{certificates.user}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"certificates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hD65TJvxnv8oIuyOmD056w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/hD65TJvxnv8oIuyOmD056w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7_JyTOaJuGD5ahUdWGvcnw"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"..."</span><span class="p">:</span><span class="s2">"..."</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">PUT /v2/certificates/:claim_code</code> <code class="prettyprint user">USER</code></p>
+<h3 id='request'>Request</h3>
+<p>If a valid certificate with the claim code is found, the certificate ownership will update
+to the authenticated user making the request.</p>
+<h3 id='response'>Response</h3>
+<p>See <a href="#fetch-a-certificate">Fetch a Certificate</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='comps'>Comps</h1>
+<p>Coming Soon</p>
+
+<!--
+## Send Comps to an Email(s)
+-->
+<h1 id='customers'>Customers</h1>
+<p>Coming Soon</p>
+
+<!--
+## Create a Customer
+## List all Customers
+## Fetch a Customer
+## Comp a Customer
+-->
+
+<!--
+################################################################################
+-->
+<h1 id='gifts'>Gifts</h1><h2 id='fetch-a-gift'>Fetch a Gift</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/gifts/Kk8dw5jSaf2oyzLMet9CLA/gifts
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"gifts.certificate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/{gifts.certificate}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"gifts.sender"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{gifts.sender}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"gifts.recipient"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{gifts.recipient}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"gifts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kk8dw5jSaf2oyzLMet9CLA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/gifts/Kk8dw5jSaf2oyzLMet9CLA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sender_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sender Schmidt"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"sender_reply_to"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sender@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"recipient_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Receiver Rogers"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"recipient_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"recipient@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"I hope you enjoy a night out on me!"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"send_date"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"claimed_at"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_sent_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T18:42:31Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"attempts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"failure_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"certificate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uNgmH1EPY6VKj3khdRFo0w"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"sender"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ypRuj-KYopAl_yF2PqXlfg"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"recipient"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T18:42:30Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T18:42:31Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/gifts/:gift_id</code> <code class="prettyprint user">USER</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this gift, will respond to GET requests</td>
+</tr>
+<tr>
+<td>sender_name</td>
+<td>Name of the certificate owner who is sending the gift</td>
+</tr>
+<tr>
+<td>sender_reply_to</td>
+<td>Reply email address of the certificate owner who is sending the gift</td>
+</tr>
+<tr>
+<td>recipient_name</td>
+<td>Gift recipient&rsquo;s name</td>
+</tr>
+<tr>
+<td>recipient_email</td>
+<td>Email address where to send the gift</td>
+</tr>
+<tr>
+<td>message</td>
+<td>Personal message to include in the gift email</td>
+</tr>
+<tr>
+<td>send_date</td>
+<td>Date when the gift should be sent. All future gifts send at or around 3AM ET on date specified. Defaults to immediate send.</td>
+</tr>
+<tr>
+<td>claimed_at</td>
+<td>Datetime when the recipient claims the gift. null until claimed</td>
+</tr>
+<tr>
+<td>last_sent_at</td>
+<td>Datetime indicating the last time Instagift attempted to deliver the gift email</td>
+</tr>
+<tr>
+<td>attempts</td>
+<td>Number of times the gift has been sent</td>
+</tr>
+<tr>
+<td>failure_count</td>
+<td>Number of times the gift failed to send</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-certificate">certificate</a></td>
+<td>Certificate being gifted</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-user">sender</a></td>
+<td>User who sent the gift</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-user">recipient</a></td>
+<td>User who received the gift. Null until claimed.</td>
+</tr>
+</tbody></table>
+<h2 id='list-all-gifts'>List all Gifts</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/gifts
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"gifts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kk8dw5jSaf2oyzLMet9CLA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/gifts/Kk8dw5jSaf2oyzLMet9CLA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/gifts</code> <code class="prettyprint user">USER</code></p>
+<h3 id='response'>Response</h3>
+<p>Array of <a href="#fetch-a-gift">gifts</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='locations'>Locations</h1><h2 id='fetch-a-location'>Fetch a Location</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/locations/AzoXEYPYxG3OUaKJi234WQ
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"locations.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{locations.merchant}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"_xVSvoERC3KV6vdcKWgjIw"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/_xVSvoERC3KV6vdcKWgjIw"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"display"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen, Tuscan Kitchen 2, 100 Main St., Ste 2, Pleasantville, KS"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen 2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100 Main St."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"address2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ste 2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Pleasantville"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"KS"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"67502"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3166620036"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">38.081600000000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"lng"</span><span class="p">:</span><span class="w"> </span><span class="mf">-97.931500000000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BZegPI8u-9Qj8UCVfxosbw"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T13:17:13Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T13:17:13Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/locations/:location_id</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this location, will respond to GET requests</td>
+</tr>
+<tr>
+<td>display</td>
+<td>String combining the name, address, city and state for convenience</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Null allowed. Useful to explain a merchant&rsquo;s multiple locations</td>
+</tr>
+<tr>
+<td>address1</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>address2</td>
+<td>Null allowed</td>
+</tr>
+<tr>
+<td>city</td>
+<td></td>
+</tr>
+<tr>
+<td>state</td>
+<td>Standard USPS or ANSI two letter code</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>Standard 5 or 9 digit US zip code</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>10 digits, unformatted.</td>
+</tr>
+<tr>
+<td>lat</td>
+<td>Null allowed</td>
+</tr>
+<tr>
+<td>lng</td>
+<td>Null allowed</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-merchant">merchant</a></td>
+<td>Merchant details for this certificate</td>
+</tr>
+</tbody></table>
+<h2 id='list-all-locations-for-a-merchant'>List all Locations for a Merchant</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/merchants/AzoXEYPYxG3OUaKJi234WQ/locations
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"locations.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{locations.merchant}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aU1Tefis_JCcbHhs0Rl30g"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/aU1Tefis_JCcbHhs0Rl30g"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yk2aWtv97ZbEjVH0E_511g"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/merchant/:merchant_id/locations</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<p>Array of <a href="#fetch-a-location">locations</a></p>
+<h2 id='list-redemption-locations-for-a-product'>List Redemption Locations for a Product</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/products/LJJ306Z-MDQs6ppbP_55TQ/locations
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"locations.product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/products/{locations.product}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"locations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LJJ306Z-MDQs6ppbP_55TQ"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/LJJ306Z-MDQs6ppbP_55TQ"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VYDlYME879dbz7Mj0JoLsA"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/product/:product_id/locations</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<p>Array of <a href="#fetch-a-location">locations</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='merchants'>Merchants</h1><h2 id='fetch-a-merchant'>Fetch a Merchant</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/merchants/AzoXEYPYxG3OUaKJi234WQ
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"merchants.locations"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{merchants.id}/locations"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"merchants"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PiIxGa518njpRGYCSXrarg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/PiIxGa518njpRGYCSXrarg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://tuscankitchen.instagift.com/"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"time_zone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Eastern Time (US &amp; Canada)"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"logo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/logos/original/missing.png"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T14:05:32Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T14:05:32Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/merchants/:merchant_id</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this merchant, will respond to GET requests</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-location">locations</a></td>
+<td>Array of a merchant&rsquo;s locations</td>
+</tr>
+</tbody></table>
+<h2 id='generate-an-api-key'>Generate an API Key</h2>
+<p>Coming soon</p>
+
+<!--
+################################################################################
+-->
+<h1 id='passwords'>Passwords</h1><h2 id='reset-password'>Reset Password</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/passwords \
+  -H "Content-Type: application/json" \
+  -d '{"email":"person@example.com"}' \
+
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Password reset sent"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"person@example.com"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">POST /v2/passwords</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>true</td>
+<td>A valid email address for an Instagift user account</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">201 Created</code></p>
+
+<!--
+################################################################################
+-->
+<h1 id='products'>Products</h1><h2 id='fetch-a-product'>Fetch a Product</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/products/AzoXEYPYxG3OUaKJi234WQ
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"products.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{products.merchant}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"products.redemption_locations"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/products/{products.id}/locations"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"products.product_options"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/products/{products.id}/product_options"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kpu_xWu_0jy746VfKMO4ag"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://tuscankitchen.instagift.com/gift-card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GiftCertificate"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"discount_sale_name"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"is_giveaway"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"is_print_only"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"can_split_value"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"gift_card_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"//s3.amazonaws.com/assets.dealcoop.com/gift_cards/63001/original.jpg?1386187921"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"photos"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+            </span><span class="s2">"headline"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"tagline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tuscan Kitchen eGift Card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"terms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"Good on any food or drink"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Can be used on tax and gratuity"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Does not expire"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"Merchant are not required to give change for the unused balance"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"expiration_instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Unless otherwise noted, this gift card NEVER EXPIRES"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"redemption_instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This gift card can be redeemed at the locations listed at http://tuscankitchen.instagift.com/gift-card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"merchant_instructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This gift card originated from the Instagift.com online store for Tuscan Kitchen located at http://tuscankitchen.instagift.com/ Your staff should be trained to accept and validate gifts cards as they arrive. If you have questions, please ask your manager or e-mail support@instagift.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"KnWauxXPaBrwd4xnmUoqCA"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T14:55:42Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T14:55:42Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/products/:product_id</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this product, will respond to GET requests</td>
+</tr>
+<tr>
+<td>type</td>
+<td>GiftCertificate, Event, or Deal</td>
+</tr>
+<tr>
+<td>discount_sale_name</td>
+<td>Some type=Deal belong to this special kind of sale</td>
+</tr>
+<tr>
+<td>is_giveaway</td>
+<td>Was this issued as a comp, reward, or giveaway?</td>
+</tr>
+<tr>
+<td>is_print_only</td>
+<td>Does the merchant allow certificates for this product to be redeemed via mobile? If false, mobile redemption should be disabled.</td>
+</tr>
+<tr>
+<td>can_split_value</td>
+<td>Certificate face value can be split</td>
+</tr>
+<tr>
+<td>gift_card_image</td>
+<td>Image of the gift card</td>
+</tr>
+<tr>
+<td>photos[]</td>
+<td>Events and Deals can include a photo gallery</td>
+</tr>
+<tr>
+<td>headline</td>
+<td>Short title, null for type=GiftCertificate</td>
+</tr>
+<tr>
+<td>tagline</td>
+<td>Longer title</td>
+</tr>
+<tr>
+<td>terms[]</td>
+<td>The fine print for a product</td>
+</tr>
+<tr>
+<td>expiration_instructions</td>
+<td>Details about the expiration of this product, and its certificates</td>
+</tr>
+<tr>
+<td>redemption_instructions</td>
+<td>Intended for consumers, how to redeem certificates</td>
+</tr>
+<tr>
+<td>merchant_instructions</td>
+<td>Intended for merchant staff, explanation of what and where the certificates came from</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-merchant">merchant</a></td>
+<td>Merchant details for this certificate</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-location">redemption_locations</a></td>
+<td>Location details for each product redemption location</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-product-option">product_options</a></td>
+<td>Pricing/purchase options for this product</td>
 </tr>
 </tbody></table>
 
-          <h1 id='errors'>Errors</h1>
-<p><aside class="notice">This error section is stored in a separate file in <code class="prettyprint">includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the <code class="prettyprint">includes</code> folder and add them to the top of your <code class="prettyprint">index.md</code>&rsquo;s frontmatter. Files are included in the order listed.</aside></p>
+<!--
+################################################################################
+-->
+<h1 id='product-options'>Product Options</h1><h2 id='fetch-a-product-option'>Fetch a Product Option</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/product_options/AzoXEYPYxG3OUaKJi234WQ
+</pre>
 
-<p>The Kittn API uses the following error codes:</p>
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"product_options.product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/products/{product_options.product}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uWlrlf8fBTseVC5gF96H5w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/product_options/uWlrlf8fBTseVC5gF96H5w"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"face_value_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"price_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"tagline"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$100 Gift Card"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"limit_per_order"</span><span class="p">:</span><span class="w"> </span><span class="err">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"is_recommended"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"udTPAbSavpDKUjqcUPyPMQ"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T15:08:29Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T15:08:29Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/product_options/:product_option_id</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this product option, will respond to GET requests</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>ISO 4217 currency codes. Most likely &ldquo;USD&rdquo;</td>
+</tr>
+<tr>
+<td>face_value_cents</td>
+<td>Amount certificates from this product_option can be redeemed for</td>
+</tr>
+<tr>
+<td>price_cents</td>
+<td>Price consumers will pay for certificates from this product_option</td>
+</tr>
+<tr>
+<td>tagline</td>
+<td>Helpful to describe the differences between product options for a product</td>
+</tr>
+<tr>
+<td>count</td>
+<td>Inventory. Null means unlimited</td>
+</tr>
+<tr>
+<td>limit_per_order</td>
+<td>Number consumers are allowed to purchase per order</td>
+</tr>
+<tr>
+<td>is_recommended</td>
+<td>The option that the merchant or Instagift recommend that a consumer purchase</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-product">product</a></td>
+<td>Product this pricing option belongs to</td>
+</tr>
+</tbody></table>
+<h2 id='list-product-options-for-a-product'>List Product Options for a Product</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/products/AzoXEYPYxG3OUaKJi234WQ/product_options
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"product_options.product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/products/{product_options.product}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_options"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aT6dCx3pRkoMgCnoAfrlpA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/product_options/aT6dCx3pRkoMgCnoAfrlpA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FBHf_LcvfYsMqEFxf1Dmdg"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/products/:product_id/product_options</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='response'>Response</h3>
+<p>Array of <a href="#fetch-a-product-option">product options</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='redemptions'>Redemptions</h1><h2 id='fetch-a-redemption'>Fetch a Redemption</h2>
+<blockquote>
+<p>Sample request(s)</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"redemptions.certificate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/certificates/{redemptions.certificate}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"redemptions.user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/{redemptions.user}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"redemptions.merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/merchants/{redemptions.merchant}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"redemptions.location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/{redemptions.location}"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"redemptions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount_paid_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"api-v2-user"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"certificate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-3qdxkN_aoAwoX4byOLmrQ"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"IRxn4SmMQlDjM7bVlIfl5w"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"merchant"</span><span class="p">:</span><span class="w"> </span><span class="s2">"WnDQkpaFftq5w1G8PX2Rpg"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBVMHAdRRRjdfUFGJZzRPw"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T18:08:43Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-09T18:08:43Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/redemptions/:redemption_id</code> <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this redemption, will respond to GET requests</td>
+</tr>
+<tr>
+<td>amount_cents</td>
+<td>Amount redeemed in cents</td>
+</tr>
+<tr>
+<td>amount_paid_cents</td>
+<td>Amount paid for the redeemed certificate (if it was purchased at discount)</td>
+</tr>
+<tr>
+<td>source</td>
+<td>Used by the merchant to redeem certificates</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-certificate">certificate</a></td>
+<td>Certificate that was redeemed</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-user">user</a></td>
+<td>User details for the redeemer</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-merchant">merchant</a></td>
+<td>Merchant where the certificate was redeemed</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-location">location</a></td>
+<td>Location where the certificate was redeemed</td>
+</tr>
+</tbody></table>
+<h2 id='list-all-redemptions'>List all Redemptions</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/redemptions
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"redemptions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/gifts/f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/redemptions</code> <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='response'>Response</h3>
+<p>Array of <a href="#fetch-a-redemption">redemptions</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='support-tickets'>Support Tickets</h1>
+<p>Comin soon, sample requests and responses included for testing. Subject to change.</p>
+<h2 id='create-a-support-ticket'>Create a Support Ticket</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/support_tickets \
+    -H "Content-Type: application/json" \
+    -d '{"name":"John Doe,"email":"person@example.com","message":"I can't access my account"}'
+</pre>
+
+<p><code class="prettyprint">POST /v2/support_tickets</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='request'>Request</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>true</td>
+<td>Requester&rsquo;s name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>true</td>
+<td>Requester&rsquo;s email address</td>
+</tr>
+<tr>
+<td>message</td>
+<td>true</td>
+<td>Description of the support issue or question</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">201 Created</code></p>
+
+<!--
+################################################################################
+-->
+<h1 id='users'>Users</h1><h2 id='fetch-a-user'>Fetch a User</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl https://api.instagift.com/v2/users/sYdLUTYH8eVD-p6zIVn30g
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"user.certificates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/user/{users.id}/certificates"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"user.sent_gifts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/user/{users.id}/gifts"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"user.redemptions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/user/{users.id}/redemptions"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sYdLUTYH8eVD-p6zIVn30g"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/728"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"person@example.com"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"authentication_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nh6W4t-ffsbT-xRp6k_h"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"last_login_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T15:39:36Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T15:39:36Z"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-10-10T15:39:36Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/users/:user_id</code> <code class="prettyprint user">USER</code> <code class="prettyprint merchant">MERCHANT</code></p>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this product option, will respond to GET requests</td>
+</tr>
+<tr>
+<td>name</td>
+<td>User&rsquo;s registered name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>User&rsquo;s email, used for authentication, order confirmations, notifications, etc. Only visible to an authenticated user.</td>
+</tr>
+<tr>
+<td>authentication_token</td>
+<td>Used for API authentication. Only visible to an authenticated user.</td>
+</tr>
+<tr>
+<td>last_login_at</td>
+<td>Datetime the user last logged in to Instagift</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#fetch-a-certificate">certificates</a></td>
+<td>A list of a user&rsquo;s certificates</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-gift">gifts</a></td>
+<td>Both sent and received gifts</td>
+</tr>
+<tr>
+<td><a href="#fetch-a-redemption">redemptions</a></td>
+<td>A list of a user&rsquo;s redemptions</td>
+</tr>
+</tbody></table>
+<h2 id='create-a-user'>Create a User</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/users \
+    -H "Content-Type: application/json" \
+    -d '{"user":{"email":"person@example.com","password":"testing1234","password_confirmation":"testing12345","first_name":"John","last_name":"Doe"}}'
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sYdLUTYH8eVD-p6zIVn30g"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/728"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"authentication_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nh6W4t-ffsbT-xRp6k_h"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">GET /v2/users/:user_id</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='request'>Request</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>true</td>
+<td>A JSON object of a user&rsquo;s registration info. { &ldquo;user&rdquo; : { &ldquo;email&rdquo; : &ldquo;person@example.com&rdquo;, &ldquo;password&rdquo; : &ldquo;testing1234&rdquo;, &ldquo;password_confirmation&rdquo; : &ldquo;testing12345&rdquo;, &ldquo;first_name&rdquo; : &ldquo;John&rdquo;, &ldquo;last_name&rdquo;  : &ldquo;Doe&rdquo; } }</td>
+</tr>
+<tr>
+<td>user.email</td>
+<td>true</td>
+<td>Must be valid and not already registered</td>
+</tr>
+<tr>
+<td>user.password</td>
+<td>true</td>
+<td>Must be at least 5 characters</td>
+</tr>
+<tr>
+<td>user.password_confirmation</td>
+<td>true</td>
+<td>Must match password</td>
+</tr>
+<tr>
+<td>user.first_name</td>
+<td>false</td>
+<td></td>
+</tr>
+<tr>
+<td>user.last_name</td>
+<td>false</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">201 Created</code> See <a href="#fetch-a-user">Fetch a User</a></p>
+
+<!--
+################################################################################
+-->
+<h1 id='tokens'>Tokens</h1><h2 id='request-user-token'>Request User Token</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/tokens \
+  -H "Content-Type: application/json" \
+  -d '{"user":{"email":"person@example.com","password":"testing1234"}}'
+</pre>
+
+<blockquote>
+<p>Sample response</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"user.certificates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/user/{users.id}/certificates"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user.redemptions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/user/{users.id}/redemptions"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user.gifts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/user/{users.id}/gifts"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"users"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GddXpGdvs3V89PkUwCSoIg"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/users/GddXpGdvs3V89PkUwCSoIg"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"person@example.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tester Joe"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"authentication_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"quhZKsGMSJc5eUAYm-FA"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"last_login_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-07-09T01:41:41Z"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p><code class="prettyprint">POST /v2/tokens</code> <code class="prettyprint public">PUBLIC</code></p>
+<h3 id='request-parameters'>Request Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>true</td>
+<td>A JSON object of a user’s credentials. { user: { email: &ldquo;person@example.com&rdquo;, password: &ldquo;testing1234&rdquo; } }</td>
+</tr>
+<tr>
+<td>user.email</td>
+<td>true</td>
+<td>Email address to authenticate</td>
+</tr>
+<tr>
+<td>user.password</td>
+<td>true</td>
+<td>User&rsquo;s password</td>
+</tr>
+</tbody></table>
+<h3 id='response'>Response</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>href</td>
+<td>Resource URL for this user, will respond to GET requests</td>
+</tr>
+<tr>
+<td>email</td>
+<td>User&rsquo;s email address, used for API authentication</td>
+</tr>
+<tr>
+<td>authentication_token</td>
+<td>Token used for API authentication</td>
+</tr>
+<tr>
+<td>last_login_at</td>
+<td>Datetime of last login</td>
+</tr>
+</tbody></table>
+<h3 id='relationships'>Relationships</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><a href="#certificates">certificates</a></td>
+<td>A collection of certificates for this user</td>
+</tr>
+<tr>
+<td><a href="#redemptions">redemptions</a></td>
+<td>A collection of redemption for this user</td>
+</tr>
+<tr>
+<td><a href="#gifts">gifts</a></td>
+<td>A collection of gifts for this user</td>
+</tr>
+</tbody></table>
+<h2 id='reset-user-token'>Reset User Token</h2>
+<blockquote>
+<p>Sample request</p>
+</blockquote>
+<pre class="highlight plaintext">curl -i -X DELETE https://api.instagift.com/v2/tokens \
+  -H "Content-Type: application/json" \
+  -H "X-User-Email: person@example.com" \
+  -H "X-User-Token: quhZKsGMSJc5eUAYm-FA" \
+</pre>
+
+<p><code class="prettyprint">DELETE /v2/tokens</code> <code class="prettyprint user">USER</code></p>
+<h3 id='response'>Response</h3>
+<p><code class="prettyprint">204 No Content</code></p>
+
+<!--
+################################################################################
+-->
+<h1 id='ecommerce-integration'>Ecommerce Integration</h1><h2 id='overview'>Overview</h2>
+<p>This section is intended to serve as a guide for Instagift merchant customers who wish to integrate Instagift into the ecommerce portion of their website using the Instagift API. It is for webmasters that have built, or have a high degree of control over, their ecommerce environment. If you are running ecommerce through a service like Shopify, Squarespace, or Miva Merchant, this guide is probably not for you.</p>
+<h3 id='merchant-authentication-and-api-keys'>Merchant authentication and API Keys</h3>
+<p>You can create an API key in your Instagift Merchant Dashboard under Settings → API Keys. A GROW plan is required. See <a href="#authentication">Authentication</a> for more information about making authenticated merchant API requests.</p>
+<h3 id='note-about-quotcertificatesquot'>Note about &ldquo;certificates&rdquo;</h3>
+<p>This guide refers to all Instagift issued virtual gift cards, event tickets, gift certificates, coupons and other various types of printed vouchers as &ldquo;certificates&rdquo;.</p>
+<h3 id='integration-steps'>Integration Steps</h3>
+<p>When integrating Instagift gift and reward card redemption into your checkout flow, these are the basic steps required:</p>
+
+<ol>
+<li>During checkout, your customers will need the ability to apply an &ldquo;Instagift Claim Code&rdquo; towards the balance of their order. This input box should be appropriately labeled &ldquo;Instagift Claim Code&rdquo;. Claim codes are displayed on each Instagift certificate. Claim codes include both letters and numbers and are typically 13 to 15 characters long. Example claim codes: &ldquo;MNK-QPF27E-EHJ3&rdquo;, &ldquo;U4KR-9CLT-3KNPU4&rdquo;</li>
+<li>Using the Instagift API, your ecommerce system should <a href="#fetch-a-certificate-by-claim-code">fetch the certificate by claim code</a> to check validity and balance. Merchant authentication required.</li>
+<li>If the claim code is valid, your ecommerce system should apply all or part (if allowed) of the certificate&rsquo;s face value to the customer&rsquo;s current order.</li>
+<li>After successful checkout, your system should <a href="#redeem-a-certificate-by-claim-code">redeem the certificate by claim code</a>, specifying the amount (amount_to_redeem_cents) to deduct from the Instagift certificate balance. Merchant authentication required.</li>
+</ol>
+<h2 id='partial-redemption'>Partial Redemption</h2>
+<p>API parameters and values are <strong>bold</strong>.</p>
+<h3 id='can_split_value'>can_split_value</h3>
+<p>If a certificate <strong>can_split_value</strong> is <strong>true</strong>, you can submit a <strong>amount_to_redeem_cents</strong> for less than the certificate&rsquo;s <strong>face_value_cents</strong>. A successful partial redemption will result in:</p>
+
+<ol>
+<li>The <strong>face_value_cents</strong> of the certificate will be lowered to the redemption amount</li>
+<li>The certificate <strong>status</strong> will be updated to <strong>redeemed</strong></li>
+<li>A new certificate will be placed in the users account for the balance. They can use this new certificate (with a new claim code) at a later date.</li>
+</ol>
+
+<p>If a certificate <strong>can_split_value</strong> is <strong>false</strong>, the entire certificate face value will be redeemed. This should be made apparent to the user in order to avoid confusion.</p>
+<h3 id='dollars-vs-cents'>Dollars vs Cents</h3>
+<p>Currently, the Instagift API does not allow for redemption amounts that are not whole numbers. If you submit a redemption <strong>amount_to_redeem_cents</strong> of 2381 ($23.81), you’ll receive a redemption response for 2300 ($23.00), which is the <strong>amount_to_redeem_cents</strong> rounded down to the nearest integer. If a fetch reveals that a user has a certificate for $100, and they owe $52.50 for your order, you can either:</p>
+
+<ul>
+<li>Submit a redemption for 5200 ($52), meaning the user will have to pay the remaining 50 cents with an alternate form of payment, or</li>
+<li>Submit a redemption for 5300 ($53), meaning the user will receive another certificate from Instagift for $47, losing 50 cents.</li>
+</ul>
+
+<p>We may revisit this in the future.</p>
+
+          <h1 id='errors'>Errors</h1>
+<p>The Instagift API uses the following error codes:</p>
 
 <table><thead>
 <tr>
@@ -200,56 +2229,34 @@ Remember — a happy kitten is an authenticated kitten!
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>Bad Request &ndash; Your request is somehow invalid or missing required information</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Unauthorized &ndash; Your authorization credentials are missing or incorrect for the resource you&rsquo;re trying to access</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+<td>Not Found &ndash; The resource id you provided cannot be found</td>
 </tr>
 <tr>
 <td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
+<td>Not Acceptable &ndash; Your request isn&rsquo;t JSON</td>
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slown down!</td>
+<td>Too Many Requests &ndash; You&rsquo;ve reached your rate limit</td>
 </tr>
 <tr>
 <td>500</td>
 <td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
 </tr>
 </tbody></table>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="cURL">cURL</a>
           </div>
       </div>
     </div>
