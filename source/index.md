@@ -472,7 +472,7 @@ The child certificate will have a parent relationship pointing to the original c
 ```cURL
 curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/redemptions \
 -H "Content-Type: application/json" \
--d '{"amount_to_redeem_cents":"4000"}' \
+-d '{"amount_to_redeem_cents":"4000", "redemption_location_id":"AzoXEYPYxG3OUaKJi234WQ"}' \
 ```
 
 > Sample response
@@ -480,14 +480,19 @@ curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/re
 ```json
 {
     "links": {
-        "...": "..."
+        "...": "...",
+        "redemptions.location": "/v2/locations/{redemptions.location}"
     },
     "redemptions": [
         {
             "id": "f_OGwyVpgEBgRf-nh-0faA",
             "href": "/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA",
             "amount_cents": 4000,
-            "...": "..."
+            "...": "...",
+            "links": {
+                "location": "AzoXEYPYxG3OUaKJi234WQ",
+                "...":"..."
+            }
         }
     ]
 }
@@ -500,6 +505,7 @@ curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/re
 Parameter | Required | Description
 --------- | --------- | -----------
 amount_to_redeem_cents | false | Amount to redeem. If none is passed, the entire certificate face value is redeemed.
+redemption_location_id | false | Location where the certificate is being redeemed
 
 ### Response
 
