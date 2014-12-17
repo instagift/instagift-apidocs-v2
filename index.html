@@ -705,7 +705,7 @@ The child certificate will have a parent relationship pointing to the original c
 </blockquote>
 <pre class="highlight plaintext">curl -X POST https://api.instagift.com/v2/certificates/eSilaL3ev7w3UXvssQ_xFA/redemptions \
 -H "Content-Type: application/json" \
--d '{"amount_to_redeem_cents":"4000"}' \
+-d '{"amount_to_redeem_cents":"4000", "redemption_location_id":"AzoXEYPYxG3OUaKJi234WQ"}' \
 </pre>
 
 <blockquote>
@@ -713,14 +713,19 @@ The child certificate will have a parent relationship pointing to the original c
 </blockquote>
 <pre class="highlight json"><span class="p">{</span><span class="w">
     </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+        </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"redemptions.location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/locations/{redemptions.location}"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"redemptions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"href"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v2/redemptions/f_OGwyVpgEBgRf-nh-0faA"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"amount_cents"</span><span class="p">:</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+            </span><span class="s2">"..."</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"links"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AzoXEYPYxG3OUaKJi234WQ"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"..."</span><span class="p">:</span><span class="s2">"..."</span><span class="w">
+            </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -739,6 +744,11 @@ The child certificate will have a parent relationship pointing to the original c
 <td>amount_to_redeem_cents</td>
 <td>false</td>
 <td>Amount to redeem. If none is passed, the entire certificate face value is redeemed.</td>
+</tr>
+<tr>
+<td>redemption_location_id</td>
+<td>false</td>
+<td>Location where the certificate is being redeemed</td>
 </tr>
 </tbody></table>
 <h3 id='response'>Response</h3>
